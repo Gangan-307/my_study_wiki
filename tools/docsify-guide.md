@@ -10,7 +10,7 @@ Docsify 基于 Node.js 运行，因此首先需要安装 Node.js 环境。
 
 ### 1. 下载与安装
 *   **官方下载地址**：[Node.js 官方下载网站](https://nodejs.cn/download/)
-* ![nodejs下载图](/images/nodejs-download.png ':size=400')
+* ![nodejs下载图](../images/nodejs-download.png ':size=400')
 *   **版本选择**：推荐选择 **msi-64位**，稳定性更好。
 *   **安装步骤**：双击下载好的安装包，一路点击“Next（下一步）”即可。安装程序会自动将 Node.js 和 npm（包管理器）写入系统环境变量。
 
@@ -196,40 +196,3 @@ git push -u origin main
 
 ---
 
-### 方案 B：部署到 Gitee Pages（国内访问速度极快）
-
-如果您希望国内（包括手机 Wi-Fi/移动数据）访问速度飞快，可以选择码云（Gitee）。
-
-#### 步骤 1：在 Gitee 上新建仓库
-1. 登录 [Gitee](https://gitee.com/)（首次使用需要完成实名认证）。
-2. 点击右上角的 **“+” -> “新建仓库”**。
-3. **仓库名称**填入：`my_study_wiki`。
-4. 选择 **开源**（即公开）。
-5. 不要勾选初始化仓库的选项，直接点击 **创建**。
-
-#### 步骤 2：推送代码到 Gitee
-如果您已经关联过 GitHub，可以先删除关联或者直接使用 Gitee 提供的指令推送。如果第一次推送，在本地根目录终端运行：
-```bash
-git init
-git add .
-git commit -m "deploy to gitee"
-git remote add origin https://gitee.com/您的用户名/my_study_wiki.git
-git push -u origin "master"
-```
-
-#### 步骤 3：开启 Gitee Pages 服务
-1. 进入您在 Gitee 的仓库页面。
-2. 点击顶部菜单栏的 **“服务” -> “Gitee Pages”**。
-3. 部署分支选择 **`master`**，部署目录保持为空（代表根目录）。
-4. 点击 **“激活”**（首次使用需要上传身份证进行实名审核，审核通常需要 1 个工作日）。
-5. 激活成功后，页面会给出您的专属网址：`https://您的用户名.gitee.io/my_study_wiki`。
-
-> **📌 维护与更新提示**：
-> 无论使用哪个平台，后续您在本地写了新笔记，只需在终端运行：
-> ```bash
-> git add .
-> git commit -m "更新笔记"
-> git push
-> ```
-> GitHub 会自动拉取并更新网页。如果是 Gitee Pages，每次推送后需要手动去“Gitee Pages”页面点击一次**“更新”**按钮。
-```

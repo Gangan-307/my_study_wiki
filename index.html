@@ -5,37 +5,94 @@
   <title>我的学习与复习知识库</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   
-  <!-- 【新增】让浏览器标签页显示您的 favicon.ico 图标 -->
-<link rel="icon" href="./favicon.ico" type="image/x-icon">
-  
-  <!-- 引入官方 Vue 主题样式 -->
+  <!-- 引入官方主题 -->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+
+  <!-- 【自定义样式】修改主题颜色为高级科技蓝，并美化细节 -->
+  <style>
+    :root {
+      --theme-color: #2f54eb; /* 修改核心主题色为极客蓝 */
+    }
+    /* 侧边栏选中状态加粗 */
+    .sidebar-nav li.active > a {
+      font-weight: bold;
+    }
+    /* 美化表格样式 */
+    table {
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: collapse;
+    }
+    th {
+      background-color: #f5f7fa !important;
+    }
+    /* 引用块样式美化 */
+    blockquote {
+      border-left: 4px solid #2f54eb !important;
+      background-color: #f0f5ff;
+      padding: 10px 15px;
+      border-radius: 0 4px 4px 0;
+    }
+  </style>
 </head>
 <body>
   <div id="app">加载中...</div>
   <script>
     window.$docsify = {
       name: '学习知识库',
-      logo: 'favicon.ico', // 【新增】让左侧侧边栏上方显示 Logo 图标
+      logo: 'favicon.ico', 
       loadSidebar: true,   
       loadNavbar: true,    
       coverpage: true,     
       onlyCover: false,    
       subMaxLevel: 2,      
+      // 复制代码插件配置
+      copyCode: {
+        buttonText : '复制',
+        errorText  : '失败',
+        successText: '已复制'
+      },
       search: {
         maxAge: 86400000,
         paths: 'auto',
         placeholder: '搜索知识点...',
         noData: '未找到相关结果',
         depth: 6
-      }
+      },
+
+      plugins: [
+        function(hook, vm) {
+          // 每次页面内容渲染完毕后执行
+          hook.doneEach(function() {
+            // 1. 获取今天的 YYYY-MM-DD 格式日期
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+
+            // 2. 寻找页面中所有 <a> 标签
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+              // 3. 如果链接文字中包含了“今日日志”或“今日计划”
+              if (link.textContent.includes('今日日志') || link.textContent.includes('今日计划')) {
+                // 4. 强制将其跳转链接重写为：#/daily/YYYY-MM-DD
+                link.href = `#/daily/${dateStr}`;
+              }
+            });
+          });
+        }
+      ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <!-- 搜索功能插件 -->
+  <!-- 搜索插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <!-- C语言代码高亮插件 -->
+  <!-- C语言代码高亮 -->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-c.min.js"></script>
+  <!-- 【新增】一键复制代码块插件（对复制C语言代码极其方便） -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
 </body>
 </html>
