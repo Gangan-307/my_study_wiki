@@ -233,7 +233,7 @@ def git_push_assets():
             
             # 3. git push
             print("  -> 运行: git push")
-            subprocess.run(["git", "push"], check=True)
+            subprocess.run(["git", "push","-u", "origin", "master:main"], check=True)
             print("  [🎉 成功] 您的最新 Wiki 已成功部署至 GitHub Pages！")
             
     except subprocess.CalledProcessError as e:
