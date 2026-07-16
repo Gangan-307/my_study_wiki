@@ -2,6 +2,7 @@
 * [📝 临时速记 (草稿箱)](scratchpad.md) 
 
 * 📅 每日学习日志
+  * [2026-07-16 日志](daily/2026-07-16.md)
   * [2026-07-15 日志](daily/2026-07-15.md)
   * [2026-07-14 日志](daily/2026-07-14.md)
   * [2026-07-12 日志](daily/2026-07-12.md)
@@ -11,6 +12,7 @@
 
 * 💻 C 语言与底层
   * [C 语言-指针专题](c-language/pointer.md)
+  * [回调函数](c-language/callback.md) 
 
 * 💾 芯片平台与开发 (MCU)
   * [📶 ESP32 架构与 ESP-IDF](esp/esp32env.md)
@@ -35,15 +37,24 @@
     * [基础：BLE 协议栈基础](middleware-algorithm/ble/basic.md)
     * [进阶：智能手表低功耗设计](middleware-algorithm/ble/lowpower.md)
     * [实战：BLE OTA 固件升级](middleware-algorithm/ble/ota.md)
+  * 🛜 Wi-Fi 与物联网通信
+    * [📦 Wi-Fi 硬件与 AT 模组](middleware-algorithm/wifi/module.md)
+    * [📑 802.11 协议与连接机制](middleware-algorithm/wifi/protocol.md)
+    * [⚙️ 一键配网技术 (SmartConfig)](middleware-algorithm/wifi/provisioning.md) 
+  * [🔈回声消除 (AEC)](middleware-algorithm/aec.md)
+
   * 🌐网络与物联网
     * [ MQTT 物联网协议](middleware-algorithm/wireless-network/mqtt.md)
     * [ TCP/UDP 网络套接字](middleware-algorithm//wireless-network/tcp-udp.md)
 
 * 🛠️  工程实践与工具链
+  * 💻 开发环境搭建 (Environment)
+    * [🐧 WSL (Ubuntu) 与 VS Code 远程开发](tools/env-setup/wsl-ubuntu.md)
+    * [📶 WSL 下 ESP-IDF 搭建与串口烧录](tools/env-setup/esp-idf-wsl.md)
   * 调试仪器使用
     * [🔬 示波器波形分析](tools/toolchains/scope.md)
     * [📟 逻辑分析仪时序抓取](tools/toolchains/logic-analyzer.md)
-  * 软件工程
+  * 软件工程 
     * [🛠️ Docsify 搭建指南](tools/docsify-guide.md)
-    * [📂 Git 规范化与 Code Review](tools/git-workflow.md)
+    * [📂 Git 下载安装与规范化 Code Review](tools/git-workflow.md)
     * [💾 内存优化与 .map 分析](tools/memory-opt.md)
