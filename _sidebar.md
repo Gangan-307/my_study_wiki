@@ -4,6 +4,7 @@
 
 
 * 📅 每日学习日志
+  * [2026-07-21 日志](daily/2026-07-21.md)
   * [2026-07-20 日志](daily/2026-07-20.md)
   * [2026-07-17 日志](daily/2026-07-17.md)
   * [2026-07-16 日志](daily/2026-07-16.md)
@@ -17,6 +18,9 @@
   * [2026-07-20 周报](weekly/2026-07-20_weekly.md)
 
 * 💻 C 语言与底层
+  * [C 语言-运算符专题](c-language/operators.md)
+  * [C 语言-枚举专题](c-language/enums.md)
+  * [C 语言-数组专题](c-language/arrays.md)
   * [C 语言-指针专题](c-language/pointer.md)
   * [回调函数](c-language/callback.md) 
 
