@@ -1,54 +1,101 @@
 import os
 import sys
+import json
+import re
+import shutil
 import subprocess
 from datetime import datetime, timedelta
 from PIL import Image
 
-# ================= 基础全局配置 =================
-IMAGE_DIR = "images"
-SIDEBAR_PATH = "_sidebar.md"
-ALLOWED_EXTENSIONS = (".png", ".jpg", ".jpeg")
-# ===============================================
+# ================= 颜色配置 (ANSI Escape Codes) =================
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+BLUE = "\033[94m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
 
-def create_daily_log():
-    """1. 自动新建今日日志，并更新侧边栏链接"""
-    print("\n[正在执行] 1. 一键新建今日日志...")
+# ================= 辅助日志输出函数 =================
+def log_success(msg): print(f"  {GREEN}[成功]{RESET} {msg}")
+def log_info(msg): print(f"  {BLUE}[正在执行]{RESET} {msg}")
+def log_warn(msg): print(f"  {YELLOW}[提示]{RESET} {msg}")
+def log_error(msg): print(f"  {RED}[错误]{RESET} {msg}")
+
+# ================= 动态配置管理 =================
+CONFIG_FILE = "wiki_config.json"
+
+DEFAULT_CONFIG = {
+    "image_dir": "images",
+    "backup_dir": "backup/images_raw",
+    "sidebar_path": "_sidebar.md",
+    "allowed_extensions": [".png", ".jpg", ".jpeg"],
+    "daily_template": "# {date} 学习日志\n\n---\n\n## 🎯 今日计划\n- [ ] \n- [ ] \n\n---\n\n## 📝 学习记录\n### 1. 核心收获\n*   \n\n---\n\n## 🤔 今日复盘\n*   **🏆 今日最大收获**：\n*   **📈 待改进与明日计划**：\n",
+    "weekly_template_header": "# 📊 本周技术周报总结 ({start_date} 至 {end_date})\n\n> **💡 系统提示**：本周报由 Wiki 自动化运维中枢通过自动读取日志汇编提炼生成。\n\n---\n\n## 💻 本周技术输入汇总\n",
+    "tasks_json_content": "{\n    \"version\": \"2.0.0\",\n    \"tasks\": [\n        {\n            \"label\": \"启动 Docsify 网页服务器\",\n            \"type\": \"shell\",\n            \"command\": \"npx docsify-cli serve .\",\n            \"runOptions\": {\n                \"runOn\": \"folderOpen\"\n            },\n            \"presentation\": {\n                \"reveal\": \"always\",\n                \"panel\": \"new\"\n            },\n            \"problemMatcher\": []\n        }\n    ]\n}"
+}
+
+def load_config():
+    """读取或初始化配置文件"""
+    if not os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                json.dump(DEFAULT_CONFIG, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"写入配置文件失败: {e}")
+        return DEFAULT_CONFIG
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return DEFAULT_CONFIG
+
+# 加载配置
+CONFIG = load_config()
+
+# ================= 依赖自检 (2.1) =================
+def check_dependencies():
+    """环境依赖项检查"""
+    print(f"\n{CYAN}=================== 环境依赖自检 ==================={RESET}")
+    dependencies = {
+        "Git 版本管理": "git",
+        "VS Code 命令行 (code)": "code",
+        "Node.js 运行时 (npx)": "npx"
+    }
+    all_clear = True
+    for name, cmd in dependencies.items():
+        path = shutil.which(cmd)
+        if path:
+            print(f"  [√] {name:<22}: {GREEN}已就绪{RESET}")
+        else:
+            print(f"  [×] {name:<22}: {YELLOW}未检测到 (相关功能可能受限){RESET}")
+            all_clear = False
+    print(f"{CYAN}==================================================={RESET}\n")
+    return all_clear
+
+# ================= 核心业务模块 =================
+
+def create_daily_log_and_sandbox():
+    """1. 一键新建今日日志并开启开发沙盒 (合并 5.1)"""
+    log_info("1. 开始一键创建今日日志并配置开发环境...")
     today_str = datetime.now().strftime("%Y-%m-%d")
     log_file_path = f"daily/{today_str}.md"
 
+    # 1.1 生成日志文件
     if not os.path.exists("daily"):
         os.makedirs("daily")
 
-    template = f"""# {today_str} 学习日志
-
----
-
-## 🎯 今日计划
-- [ ] 
-- [ ] 
-
----
-
-## 📝 学习记录
-### 1. 核心收获
-*   
-
----
-
-## 🤔 今日复盘
-*   **🏆 今日最大收获**：
-*   **📈 待改进与明日计划**：
-"""
-
     if not os.path.exists(log_file_path):
+        template = CONFIG.get("daily_template", "").format(date=today_str)
         with open(log_file_path, "w", encoding="utf-8") as f:
             f.write(template)
-        print(f"  [成功] 已生成今日日志模板: {log_file_path}")
+        log_success(f"已生成今日日志模板: {log_file_path}")
     else:
-        print(f"  [提示] 今天的日志文件已存在: {log_file_path}")
+        log_warn(f"今日日志文件已存在: {log_file_path}")
 
-    if os.path.exists(SIDEBAR_PATH):
-        with open(SIDEBAR_PATH, "r", encoding="utf-8") as f:
+    # 1.2 同步侧边栏
+    sidebar_path = CONFIG.get("sidebar_path", "_sidebar.md")
+    if os.path.exists(sidebar_path):
+        with open(sidebar_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
         new_link_line = f"  * [{today_str} 日志](daily/{today_str}.md)\n"
@@ -61,25 +108,40 @@ def create_daily_log():
                     lines.insert(idx + 1, new_link_line)
                     inserted = True
                     break
-            
             if not inserted:
                 lines.append(new_link_line)
 
-            with open(SIDEBAR_PATH, "w", encoding="utf-8") as f:
+            with open(sidebar_path, "w", encoding="utf-8") as f:
                 f.writelines(lines)
-            print("  [成功] 已将今日日志链接自动添加到 _sidebar.md")
+            log_success("已自动将今日日志链接添加至侧边栏。")
         else:
-            print("  [提示] _sidebar.md 中已存在今天的日志链接")
+            log_warn("侧边栏中已存在今天的日志链接。")
 
+    # 1.3 自动创建 VS Code 沙盒环境启动任务
+    vscode_dir = ".vscode"
+    tasks_json_path = os.path.join(vscode_dir, "tasks.json")
+    if not os.path.exists(vscode_dir):
+        os.makedirs(vscode_dir)
+    
+    if not os.path.exists(tasks_json_path):
+        with open(tasks_json_path, "w", encoding="utf-8") as f:
+            f.write(CONFIG.get("tasks_json_content", ""))
+        log_success("已配置 VS Code 自动启动 Docsify 任务。")
+
+    # 1.4 打开整个项目空间及当前日志
     try:
+        log_info("正在启动 VS Code 并加载项目服务...")
+        # 打开项目根目录以加载 Task
+        subprocess.run(["code", "."], shell=True)
+        # 打开特定编辑文件
         subprocess.run(["code", log_file_path], shell=True)
-        print("  [成功] 已自动在 VS Code 中打开今日日志！")
-    except Exception:
-        print(f"  [提示] 请手动在 VS Code 中打开: {log_file_path}")
+        log_success("VS Code 及沙盒后台运行就绪！")
+    except Exception as e:
+        log_error(f"无法自动调起 VS Code: {e}")
 
 
 def compress_image(input_path, output_path):
-    """自适应图片压缩算法"""
+    """底层自适应压缩核心"""
     img = Image.open(input_path)
     ext = os.path.splitext(input_path)[1].lower()
     if ext == ".png":
@@ -93,10 +155,10 @@ def compress_image(input_path, output_path):
 
 
 def update_markdown_links(old_name, new_name):
-    """递归扫描整个项目，替换 Markdown 中的图片链接"""
+    """遍历全站更新 Markdown 的图片路径链接"""
     modified_count = 0
     for root, dirs, files in os.walk("."):
-        if ".git" in root or "node_modules" in root:
+        if any(ignored in root for ignored in [".git", "node_modules", "backup"]):
             continue
         for file in files:
             if file.endswith(".md"):
@@ -109,202 +171,154 @@ def update_markdown_links(old_name, new_name):
                     with open(file_path, "w", encoding="utf-8") as f:
                         f.write(new_content)
                     modified_count += 1
-                    print(f"    [链接替换] 已成功更新文件: {file_path}")
+                    print(f"    [替换链接] -> 修改文件: {file_path}")
     return modified_count
 
 
 def optimize_images():
-    """2. 自动检索、压缩图片，并更新 Markdown 中的链接"""
-    print("\n[正在执行] 2. 一键智能压缩图片...")
-    if not os.path.exists(IMAGE_DIR):
-        print(f"  [错误] 未找到 {IMAGE_DIR} 文件夹")
+    """2. 智能压缩图片与原图交互式清理/备份 (新增 y/n 交互)"""
+    log_info("2. 开始一键智能图像优化与备份...")
+    img_dir = CONFIG.get("image_dir", "images")
+    backup_dir = CONFIG.get("backup_dir", "backup/images_raw")
+
+    if not os.path.exists(img_dir):
+        log_error(f"未检测到图片目录: {img_dir}")
+        return
+
+    allowed_ext = tuple(CONFIG.get("allowed_extensions", []))
+    files = os.listdir(img_dir)
+    raw_images = [f for f in files if f.lower().endswith(allowed_ext) and not f.startswith("opt_")]
+
+    if not raw_images:
+        log_warn("图片目录干净，无需进行增量压缩优化。")
         return
 
     today_str = datetime.now().strftime("%Y%m%d")
-    files = os.listdir(IMAGE_DIR)
-    raw_images = [f for f in files if f.lower().endswith(ALLOWED_EXTENSIONS) and not f.startswith("opt_")]
+    log_info(f"检测到 {len(raw_images)} 张原始图片，执行压缩中...")
 
-    if not raw_images:
-        print("  [提示] 暂无需要优化的原始图片。")
-        return
-
-    print(f"  [开始] 发现 {len(raw_images)} 张原始图片，开始进行自适应压缩...")
     for idx, filename in enumerate(raw_images):
-        old_path = os.path.join(IMAGE_DIR, filename)
+        old_path = os.path.join(img_dir, filename)
         ext = os.path.splitext(filename)[1].lower()
         new_filename = f"opt_{today_str}_{idx + 1:02d}{ext}"
-        new_path = os.path.join(IMAGE_DIR, new_filename)
+        new_path = os.path.join(img_dir, new_filename)
 
         old_size = os.path.getsize(old_path) / 1024
 
         try:
+            # 压缩保存
             compress_image(old_path, new_path)
             new_size = os.path.getsize(new_path) / 1024
             ratio = (1 - new_size / old_size) * 100
-            print(f"\n  🚀 压缩成功: {filename} -> {new_filename}")
-            print(f"     大小变化: {old_size:.1f}KB -> {new_size:.1f}KB (暴减: {ratio:.1f}%)")
 
-            print("     正在全项目扫描并更新 Markdown 图片链接...")
+            print(f"\n  🚀 优化率: {filename} -> {new_filename} | 缩小: {ratio:.1f}% ({old_size:.1f}KB -> {new_size:.1f}KB)")
+            
+            # 替换 Markdown 链接
             update_markdown_links(filename, new_filename)
 
-            os.remove(old_path)
-            print(f"     [清理] 已安全删除本地大图原图: {filename}")
+            # 新增删除原图 y/n 交互
+            confirm = input(f"  ❓ 压缩完成，是否彻底删除本地原图 {filename}？\n     [y: 彻底删除 / n: 保留原图并归档至备份区] (y/n, 默认 n): ").strip().lower()
+            if confirm == 'y':
+                os.remove(old_path)
+                log_success(f"原图已安全彻底删除: {filename}")
+            else:
+                # 创建备份安全区
+                if not os.path.exists(backup_dir):
+                    os.makedirs(backup_dir)
+                backup_path = os.path.join(backup_dir, filename)
+                shutil.move(old_path, backup_path)
+                log_success(f"原图已安全移至备份区: {backup_path}")
+
         except Exception as e:
-            print(f"  ❌ 处理图片 {filename} 失败: {e}")
-    print("\n[完成] 所有新图片处理完毕！")
+            log_error(f"处理图片 {filename} 异常: {e}")
+    print(f"\n{GREEN}[处理完成] 所有图片优化及清理流程就绪！{RESET}")
 
 
-def open_project_in_vscode_and_server():
-    """4. 自动在 VS Code 中打开项目，并通过 VS Code 自动任务在内部终端启动服务器"""
-    print("\n[正在执行] 4. 一键开启开发工作空间...")
-    
-    vscode_dir = ".vscode"
-    tasks_json_path = os.path.join(vscode_dir, "tasks.json")
-    if not os.path.exists(vscode_dir):
-        os.makedirs(vscode_dir)
-        
-    tasks_json_content = """{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "启动 Docsify 网页服务器",
-            "type": "shell",
-            "command": "npx docsify-cli serve .",
-            "runOptions": {
-                "runOn": "folderOpen"
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            },
-            "problemMatcher": []
-        }
-    ]
-}"""
-    
-    if not os.path.exists(tasks_json_path):
-        with open(tasks_json_path, "w", encoding="utf-8") as f:
-            f.write(tasks_json_content)
-        print("  [配置] 自动为您创建了 VS Code 内部终端自动启动任务配置文件。")
-
-    try:
-        print("  -> 正在唤醒 VS Code...")
-        subprocess.run(["code", "."], shell=True)
-        print("  [🎉 成功] 已成功唤醒 VS Code 并载入项目！")
-    except Exception as e:
-        print(f"  ❌ 打开 VS Code 失败，请确保 code 命令已加入环境变量。错误: {e}")
-
-
-def extract_section(file_path):
-    """解析每日日志，精准提取其中的【📝 学习记录】与【🤔 今日复盘】内容"""
+def extract_section_robust(file_path):
+    """利用正则高容错性读取日志模块 (优化 2.2)"""
     if not os.path.exists(file_path):
         return "", ""
-        
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
-        
-    record = ""
-    review = ""
-    
-    record_start = content.find("## 📝 学习记录")
-    review_start = content.find("## 🤔 今日复盘")
-    
-    if record_start != -1:
-        rest_of_content = content[record_start + len("## 📝 学习记录"):]
-        end_idx = rest_of_content.find("---")
-        if end_idx == -1:
-            end_idx = rest_of_content.find("## 🤔 今日复盘")
-        
-        if end_idx != -1:
-            record = rest_of_content[:end_idx].strip()
-        else:
-            record = rest_of_content.strip()
-            
-    if review_start != -1:
-        rest_of_content = content[review_start + len("## 🤔 今日复盘"):]
-        end_idx = rest_of_content.find("---")
-        if end_idx != -1:
-            review = rest_of_content[:end_idx].strip()
-        else:
-            review = rest_of_content.strip()
-            
+
+    # 使用正则模糊匹配类似 "## 📝 学习记录" 的区块
+    record_match = re.search(r'##\s*(?:[^\n]*?)学习记录\s*\n(.*?)(?=\n##|\n---|\Z)', content, re.DOTALL | re.IGNORECASE)
+    review_match = re.search(r'##\s*(?:[^\n]*?)今日复盘\s*\n(.*?)(?=\n##|\n---|\Z)', content, re.DOTALL | re.IGNORECASE)
+
+    record = record_match.group(1).strip() if record_match else ""
+    review = review_match.group(1).strip() if review_match else ""
+
     return record, review
 
 
 def generate_weekly_report():
-    """5. 一键获取过去 7 天的每日日志，自动编译并生成周报，精准写入归档目录"""
-    print("\n[正在执行] 5. 开始一键提炼生成本周周报...")
-    
+    """3. 自适应区间生成本周周报 (优化 2.2 & 3.2)"""
+    log_info("3. 准备生成本周阶段性周报...")
+    print("   [1] 汇总过去 7 天内的全部日志 (滚动模式)")
+    print("   [2] 汇总本周日志 (自本周一至今)")
+    sub_choice = input("   请选择周报提取模式 [1-2] (默认 1): ").strip()
+
     today = datetime.now()
-    today_str = today.strftime("%Y-%m-%d")
-    weekly_dir = "weekly"
-    weekly_file_path = f"{weekly_dir}/{today_str}_weekly.md"
+    target_dates = []
 
-    if not os.path.exists(weekly_dir):
-        os.makedirs(weekly_dir)
+    if sub_choice == "2":
+        # 自本周一至今天 (3.2)
+        days_to_subtract = today.weekday()  # 周一是 0
+        target_dates = [today - timedelta(days=i) for i in range(days_to_subtract + 1)]
+    else:
+        # 默认滚动 7 天
+        target_dates = [today - timedelta(days=i) for i in range(7)]
 
-    # 1. 查找过去 7 天内存在的所有日记文件
+    target_dates.reverse()  # 恢复正序时间流
+
     valid_logs = []
-    for i in range(7):
-        check_date = today - timedelta(days=i)
-        date_str = check_date.strftime("%Y-%m-%d")
+    for d in target_dates:
+        date_str = d.strftime("%Y-%m-%d")
         log_path = f"daily/{date_str}.md"
         if os.path.exists(log_path):
             valid_logs.append((date_str, log_path))
 
-    valid_logs.reverse()
-
     if not valid_logs:
-        print("  [错误提示] 过去 7 天未发现任何每日学习日志，无法生成周报！")
+        log_error("该时间区间内未发现任何学习日志，无法提取并生成周报。")
         return
 
-    print(f"  [发现] 在过去 7 天内共找到 {len(valid_logs)} 篇日记，正在提取内容并生成周报...")
+    # 生成周报内容
+    weekly_dir = "weekly"
+    if not os.path.exists(weekly_dir):
+        os.makedirs(weekly_dir)
 
-    # 2. 构造周报内容
     start_date = valid_logs[0][0]
     end_date = valid_logs[-1][0]
-    
-    weekly_content = f"""# 📊 本周技术周报总结 ({start_date} 至 {end_date})
+    weekly_file_path = f"{weekly_dir}/{end_date}_weekly.md"
 
-> **💡 系统提示**：本周报由 Wiki 自动化运维中枢通过自动读取过去 7 天内的每日学习日志汇编提炼生成。
-
----
-
-## 💻 本周技术输入汇总
-"""
+    header_template = CONFIG.get("weekly_template_header", "").format(start_date=start_date, end_date=end_date)
+    weekly_content = header_template
 
     for date_str, log_path in valid_logs:
-        record, review = extract_section(log_path)
-        
+        record, review = extract_section_robust(log_path)
         weekly_content += f"\n### 📅 {date_str} 学习日志\n"
-        
         if record:
             weekly_content += f"\n#### 📝 核心技术输入：\n{record}\n"
         else:
-            weekly_content += "\n*(当天无技术输入记录)*\n"
-            
+            weekly_content += "\n*(当天无匹配的核心技术输入记录)*\n"
         if review:
             indented_review = "\n".join([f"> {line}" for line in review.split("\n")])
             weekly_content += f"\n#### 🤔 当日总结复盘：\n{indented_review}\n"
-            
         weekly_content += "\n---\n"
 
-    # 3. 写入周报文件
     with open(weekly_file_path, "w", encoding="utf-8") as f:
         f.write(weekly_content)
-    print(f"  [成功] 周报已成功生成: {weekly_file_path}")
+    log_success(f"周报已聚合编译完成: {weekly_file_path}")
 
-    # 4. 自动将周报链接写入 _sidebar.md 的“阶段周报总结”目录下
-    if os.path.exists(SIDEBAR_PATH):
-        with open(SIDEBAR_PATH, "r", encoding="utf-8") as f:
+    # 同步侧边栏目录
+    sidebar_path = CONFIG.get("sidebar_path", "_sidebar.md")
+    if os.path.exists(sidebar_path):
+        with open(sidebar_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
 
-        # 定义三级菜单缩进格式：4个空格，比二级菜单更深一级
-        new_link_line = f"    * [{today_str} 周报](weekly/{today_str}_weekly.md)\n"
-        link_exists = any(f"{today_str}_weekly" in line for line in lines)
+        new_link_line = f"    * [{end_date} 周报](weekly/{end_date}_weekly.md)\n"
+        link_exists = any(f"{end_date}_weekly" in line for line in lines)
 
         if not link_exists:
-            # A. 先检查 _sidebar.md 里有没有 "📊 阶段周报总结" 目录大项
             section_idx = -1
             for idx, line in enumerate(lines):
                 if "📊 阶段周报总结" in line:
@@ -312,112 +326,105 @@ def generate_weekly_report():
                     break
 
             if section_idx != -1:
-                # 如果已存在“📊 阶段周报总结”目录，直接在它下方插入最新的周报链接
                 lines.insert(section_idx + 1, new_link_line)
-                print("  [成功] 已将本期周报自动添加至 📊 阶段周报总结 目录下！")
+                log_success("侧边栏 [📊 阶段周报总结] 已完成周报挂载！")
             else:
-                # B. 如果不存在该目录，寻找“scratchpad.md”作为锚点，在其下方初始化该目录和第一条链接
                 anchor_idx = -1
                 for idx, line in enumerate(lines):
                     if "scratchpad.md" in line:
                         anchor_idx = idx
                         break
-                
                 if anchor_idx != -1:
-                    # 依次插入：二级大项“  * 📊 阶段周报总结” 和 三级子链接 “    * [xxxx] 周报”
                     lines.insert(anchor_idx + 1, f"  * 📊 阶段周报总结\n{new_link_line}")
-                    print("  [配置] 侧边栏未发现周报目录，已自动创建 [📊 阶段周报总结] 并完成归档！")
+                    log_success("侧边栏未发现周报目录，已自动初始化并完成周报挂载。")
                 else:
-                    # 备用防错：直接追加到侧边栏末尾
                     lines.append(f"  * 📊 阶段周报总结\n{new_link_line}")
 
-            # 写回 _sidebar.md
-            with open(SIDEBAR_PATH, "w", encoding="utf-8") as f:
+            with open(sidebar_path, "w", encoding="utf-8") as f:
                 f.writelines(lines)
-        else:
-            print("  [提示] _sidebar.md 中已存在本期周报的链接")
 
-    # 5. 自动在 VS Code 中打开该周报
+    # 用编辑器载入生成的周报
     try:
         subprocess.run(["code", weekly_file_path], shell=True)
-        print("  [成功] 已在 VS Code 中为您打开本周周报！")
     except Exception:
-        print(f"  [提示] 请手动在 VS Code 中打开: {weekly_file_path}")
+        log_warn(f"建议使用 VS Code 预览生成的周报: {weekly_file_path}")
 
 
 def git_push_assets():
-    """6. 一键打包并推送到 GitHub 远程仓库"""
-    print("\n[正在执行] 6. 一键同步推送到远程 Git 仓库...")
-    
+    """4. 一键部署 Git 仓库 (优化 1.2)"""
+    log_info("4. 开始与远程 Git 仓库同步备份...")
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     commit_msg = f"Wiki Auto-Update: {now_str}"
-    
+
     try:
-        print("  -> 运行: git add .")
+        # 执行 pull 防冲突合并 (1.2)
+        log_info("正在执行本地合并抓取 (git pull --rebase)...")
+        subprocess.run(["git", "pull", "--rebase"], check=True)
+
+        log_info("正在暂存更改 (git add .)...")
         subprocess.run(["git", "add", "."], check=True)
-        
-        print(f"  -> 运行: git commit -m \"{commit_msg}\"")
+
+        log_info("正在构建本地版本...")
         result = subprocess.run(["git", "commit", "-m", commit_msg], capture_output=True, text=True)
-        
+
         if "nothing to commit" in result.stdout or "无文件要提交" in result.stdout:
-            print("  [提示] 检查完毕：本地内容无任何改动，无需提交。")
+            log_warn("检测完毕：本地库没有任何文件修改，无需提交。")
         else:
-            print("  [成功] 本地代码版本提交成功！")
-            
-            print("  -> 运行: git push")
+            log_success("本地代码版本递交成功！")
+            log_info("正在安全推送到远程仓库 (git push)...")
             subprocess.run(["git", "push"], check=True)
-            print("  [🎉 成功] 您的最新 Wiki 已成功部署至 GitHub Pages！")
-            
+            log_success("Wiki 项目资源已完美部署同步至 GitHub 仓库！")
+
     except subprocess.CalledProcessError as e:
-        print(f"  ❌ Git 命令执行失败，请检查网络或配置: {e}")
+        log_error(f"Git 命令运行异常，请确认本地是否存在分支冲突或网络异常。细节: {e}")
     except Exception as e:
-        print(f"  ❌ 发生未知错误: {e}")
+        log_error(f"处理同步流程异常: {e}")
 
 
 def show_menu():
-    """显示极客感十足的控制台菜单"""
+    """全新精简合并菜单"""
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("=====================================================")
-    print("                 🚀 Wiki控制台")
-    print("=====================================================")
-    print("   1. 📅 一键新建今日日志 (自动同步侧边栏/打开VS Code)")
-    print("   2. 📸 一键智能压缩图片 (自动更新全局 Markdown 链接)")
-    print("   3. 🔄 运行全部 (新建今日日志 + 压缩优化图片)")
-    print("   4. 💻 一键开启开发沙盒 (VS Code 内部集成终端跑服务器)")
-    print("   5. 📊 一键提炼生成本周周报 (自动汇总过去7天日志)")
-    print("   6. 🚀 一键打包推送到 GitHub (自动部署静态网页)")
-    print("   7. ❌ 退出管理系统")
-    print("=====================================================")
+    print(f"{CYAN}====================================================={RESET}")
+    print(f"                 🚀 {GREEN}Wiki控制台 {RESET}")
+    print(f"{CYAN}====================================================={RESET}")
+    print(f"   1. 📅 {GREEN}一键新建今日日志并开启沙盒{RESET} ")
+    print(f"   2. 📸 {YELLOW}一键智能压缩图片{RESET} ")
+    print(f"   3. 📊 {BLUE}一键提炼生成阶段周报{RESET} ")
+    print(f"   4. 🚀 {CYAN}一键安全同步到 GitHub{RESET} ")
+    print(f"   5. ❌ {RED}退出管理系统{RESET}")
+    print(f"{CYAN}====================================================={RESET}")
 
 
 def main():
+    # 启用 Windows 虚拟终端转义字符支持 (保证 cmd 色彩正常)
+    if os.name == 'nt':
+        os.system('')
+
+    # 启动进行自检
+    check_dependencies()
+    input("按回车键正式进入控制台菜单...")
+
     while True:
         show_menu()
-        choice = input("请选择操作 [1-7] 并回车: ").strip()
+        choice = input("请选择操作 [1-5] 并回车: ").strip()
         if choice == "1":
-            create_daily_log()
+            create_daily_log_and_sandbox()
             input("\n按回车键返回主菜单...")
         elif choice == "2":
             optimize_images()
             input("\n按回车键返回主菜单...")
         elif choice == "3":
-            create_daily_log()
-            optimize_images()
-            input("\n按回车键返回主菜单...")
-        elif choice == "4":
-            open_project_in_vscode_and_server()
-            input("\n按回车键返回主菜单...")
-        elif choice == "5":
             generate_weekly_report()
             input("\n按回车键返回主菜单...")
-        elif choice == "6":
+        elif choice == "4":
             git_push_assets()
             input("\n按回车键返回主菜单...")
-        elif choice == "7":
-            print("\n感谢使用，祝您备战面试顺利，代码无 Bug！👋")
+        elif choice == "5":
+            print(f"\n{GREEN}感谢使用，祝您备战顺利，代码无 Bug！👋{RESET}\n")
             break
         else:
-            input("\n[输入错误] 请输入 1~7 之间的数字。按回车继续...")
+            input(f"\n{RED}[输入错误]{RESET} 菜单范围 [1-5]。按回车继续...")
+
 
 if __name__ == "__main__":
     main()

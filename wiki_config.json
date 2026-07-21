@@ -1,0 +1,9 @@
+{
+    "image_dir": "images",
+    "backup_dir": "backup/images_raw",
+    "sidebar_path": "_sidebar.md",
+    "allowed_extensions": [".png", ".jpg", ".jpeg"],
+    "daily_template": "# {date} 学习日志\n\n---\n\n## 🎯 今日计划\n- [ ] \n- [ ] \n\n---\n\n## 📝 学习记录\n### 1. 核心收获\n*   \n\n---\n\n## 🤔 今日复盘\n*   **🏆 今日最大收获**：\n*   **📈 待改进与明日计划**：\n",
+    "weekly_template_header": "# 📊 本周技术周报总结 ({start_date} 至 {end_date})\n\n> **💡 系统提示**：本周报由 Wiki 自动化运维中枢通过自动读取日志汇编提炼生成。\n\n---\n\n## 💻 本周技术输入汇总\n",
+    "tasks_json_content": "{\n    \"version\": \"2.0.0\",\n    \"tasks\": [\n        {\n            \"label\": \"启动 Docsify 网页服务器\",\n            \"type\": \"shell\",\n            \"command\": \"npx docsify-cli serve .\",\n            \"runOptions\": {\n                \"runOn\": \"folderOpen\"\n            },\n            \"presentation\": {\n                \"reveal\": \"always\",\n                \"panel\": \"new\"\n            },\n            \"problemMatcher\": []\n        }\n    ]\n}"
+}
