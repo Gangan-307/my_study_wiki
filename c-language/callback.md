@@ -45,7 +45,7 @@
 
 ---
 
-## 四、 三大典型应用场景与代码实现
+## 四、 典型应用场景与代码实现
 
 ### 场景 1：嵌入式硬件中断（以 STM32 HAL 库为例）
 * **特点**：底层通过 `__weak`（弱定义）关键字预留回调接口，硬件中断触发后由 ISR 自动调用。
@@ -158,6 +158,46 @@ int main() {
     return 0;
 }
 ```
+
+### 场景 4：C 语言基础 —— 函数指针实现数组填充
+* **特点**：最简洁的回调演示，将“生成数值的具体方式”作为参数传入，使通用填充函数与具体生成逻辑解耦。适合初学者理解函数指针的本质。
+
+```c
+#include <stdlib.h>  
+#include <stdio.h>
+ 
+// 【接收端】通用数组填充函数 —— 它不知道数值怎么来，只负责调用你给它的函数
+void populate_array(int *array, size_t arraySize, int (*getNextValue)(void))
+{
+    for (size_t i=0; i<arraySize; i++)
+        array[i] = getNextValue();   // 3. 触发回调，每次获取一个数
+}
+ 
+// 【发送端】具体的数值生成函数 —— 这里用随机数
+int getNextRandomValue(void)
+{
+    return rand();
+}
+ 
+int main(void)
+{
+    int myarray[10];
+    // 2. 注册：将函数名（即地址）传给 populate_array，注意不加括号！
+    populate_array(myarray, 10, getNextRandomValue);
+    
+    for(int i = 0; i < 10; i++) {
+        printf("%d ", myarray[i]);
+    }
+    printf("\n");
+    return 0;
+}
+```
+
+**解析（通俗易懂）：**
+- `populate_array` 的第三个参数 `int (*getNextValue)(void)` 声明了一个**函数指针**，它指向一个“无参、返回 int”的函数。
+- 在 `main` 中，我们直接写 `getNextRandomValue`（**不加括号**），因为函数名本身就代表其地址（指针）。如果写成 `getNextRandomValue()`，那就变成了立即调用该函数并获取返回值（一个 `int`），类型不匹配，编译会报错。
+- 循环内部 `array[i] = getNextValue();` 实际上调用了我们传入的函数，每次获取一个随机数填入数组。这就是 **回调**：`populate_array` 在需要数值时，反过来调用我们提供的函数。
+- 这种设计的妙处在于：`populate_array` 只负责“填满数组”，至于数值怎么产生（随机数、递增序列、固定值……）完全由调用者决定。更换生成函数无需修改 `populate_array` 的代码，实现了**逻辑分离**，这也是函数指针的经典应用。
 
 ---
 
