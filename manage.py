@@ -357,9 +357,6 @@ def git_push_assets():
     commit_msg = f"Wiki Auto-Update: {now_str}"
 
     try:
-        # 执行 pull 防冲突合并 (1.2)
-        log_info("正在执行本地合并抓取 (git pull --rebase)...")
-        subprocess.run(["git", "pull", "--rebase"], check=True)
 
         log_info("正在暂存更改 (git add .)...")
         subprocess.run(["git", "add", "."], check=True)
