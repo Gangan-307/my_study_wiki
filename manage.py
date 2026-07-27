@@ -369,7 +369,7 @@ def git_push_assets():
         else:
             log_success("本地代码版本递交成功！")
             log_info("正在安全推送到远程仓库 (git push)...")
-            subprocess.run(["git", "push"], check=True)
+            subprocess.run(["git", "push", "origin", "master:main"], check=True)
             log_success("Wiki 项目资源已完美部署同步至 GitHub 仓库！")
 
     except subprocess.CalledProcessError as e:

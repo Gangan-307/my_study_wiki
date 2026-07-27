@@ -67,10 +67,12 @@
   * 💻 开发环境搭建 (Environment)
     * [🐧 WSL (Ubuntu) 与 VS Code 远程开发](tools/env-setup/wsl-ubuntu.md)
     * [📶 WSL 下 ESP-IDF 搭建与串口烧录](tools/env-setup/esp-idf-wsl.md)
+  * 🔧 嵌入式工具链与调试
+    * [🐞 GDB 调试完整学习流程](tools/debugging/gdb.md)
+    * [💾 内存优化与 .map 分析](tools/debugging/memory-opt.md)
   * 调试仪器使用
     * [🔬 示波器波形分析](tools/toolchains/scope.md)
     * [📟 逻辑分析仪时序抓取](tools/toolchains/logic-analyzer.md)
   * 软件工程 
     * [🛠️ Docsify 搭建指南](tools/docsify-guide.md)
     * [📂 Git 下载安装与规范化 Code Review](tools/git-workflow.md)
-    * [💾 内存优化与 .map 分析](tools/memory-opt.md)

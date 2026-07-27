@@ -10,7 +10,7 @@ Docsify 基于 Node.js 运行，因此首先需要安装 Node.js 环境。
 
 ### 1. 下载与安装
 *   **官方下载地址**：[Node.js 官方下载网站](https://nodejs.cn/download/)
-* ![nodejs下载图](../images/opt_20260712_02.png ':size=400')
+* ![nodejs下载图](../images/opt_20260712_02.png ':size=600')
 *   **版本选择**：推荐选择 **msi-64位**，稳定性更好。
 *   **安装步骤**：双击下载好的安装包，一路点击“Next（下一步）”即可。安装程序会自动将 Node.js 和 npm（包管理器）写入系统环境变量。
 
