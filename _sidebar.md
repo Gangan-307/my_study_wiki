@@ -4,6 +4,7 @@
 
 
 * 📅 每日学习日志
+  * [2026-08-03 日志](daily/2026-08-03.md)
   * [2026-08-01 日志](daily/2026-08-01.md)
   * [2026-07-31 日志](daily/2026-07-31.md)
   * [2026-07-30 日志](daily/2026-07-30.md)
@@ -25,8 +26,9 @@
   * [2026-07-09 日志](daily/2026-07-09.md)
 
 * 📊 阶段周报总结
+    * [2026-08-03 周报](weekly/2026-08-03_weekly.md)
     * [2026-07-25 周报](weekly/2026-07-25_weekly.md)
-  * [2026-07-20 周报](weekly/2026-07-20_weekly.md)
+    * [2026-07-20 周报](weekly/2026-07-20_weekly.md)
 
 * 💻 C 语言与底层
   * [C 语言-运算符专题](c-language/operators.md)
@@ -35,6 +37,14 @@
   * [C 语言-指针专题](c-language/pointer.md)
   * [C 语言-结构体专题](c-language/struct.md)
   * [回调函数](c-language/callback.md) 
+  * [C 语言-数据类型与类型转换专题](c-language/types-and-conversions.md)
+  * [C 语言-位运算与寄存器操作专题](c-language/bitwise-registers.md)
+  * [C 语言-存储期、作用域与模块化专题](c-language/storage-modules.md)
+  * [C 语言-字符串与缓冲区专题](c-language/strings-buffers.md)
+  * [C 语言-预处理、编译与链接专题](c-language/preprocess-build-link.md)
+  * [C 语言-内存布局与未定义行为专题](c-language/memory-undefined-behavior.md)
+  * [C 语言-中断、并发与 volatile 专题](c-language/isr-concurrency.md)
+  * [C 语言-嵌入式可靠性与测试专题](c-language/reliability-testing.md)
 
 * 💾 芯片平台与开发 (MCU)
   * [📶 ESP32 架构与 ESP-IDF](esp/esp32env.md)
