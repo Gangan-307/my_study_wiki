@@ -34,6 +34,23 @@
   * [🚀 FreeRTOS 核心机制](rtos/freertos/freertos.md)
   * [⚓ RT-Thread 构建系统](rtos/rt-thread/rt-thread.md)
 
+* 🐧 嵌入式 Linux
+  * [🧭 专区总览与学习地图](embedded-linux/index.md)
+  * [📅 两个月学习路线](embedded-linux/roadmap.md)
+  * 基础与应用开发
+    * [⌨️ Linux 使用基础](embedded-linux/linux-foundations.md)
+    * [🔨 交叉编译、构建与 ELF](embedded-linux/cross-compilation.md)
+    * [🧵 Linux 系统编程](embedded-linux/system-programming.md)
+  * 系统与驱动
+    * [🚦 启动链与系统组成](embedded-linux/boot-chain.md)
+    * [🌳 内核、设备树与模块](embedded-linux/kernel-device-tree.md)
+    * [🔌 Linux 驱动开发](embedded-linux/driver-development.md)
+    * [📦 Buildroot 与根文件系统](embedded-linux/buildroot.md)
+  * 开发板与成果
+    * [🧪 泰山派上板实战](embedded-linux/taishan-pi.md)
+    * [🛠️ 综合项目](embedded-linux/project.md)
+    * [✅ 复盘与面试清单](embedded-linux/review-checklist.md)
+
 * 🧠 中间件、应用与网络
   * [🎨 LVGL 界面开发](middleware-algorithm/lvgl.md)
   * 📶 蓝牙无线 (BLE)
