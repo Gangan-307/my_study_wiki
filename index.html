@@ -82,31 +82,7 @@
         placeholder: '搜索知识点...',
         noData: '未找到相关结果',
         depth: 6
-      },
-
-      plugins: [
-        function(hook, vm) {
-          // 每次页面内容渲染完毕后执行
-          hook.doneEach(function() {
-            // 1. 获取今天的 YYYY-MM-DD 格式日期
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            const dateStr = `${year}-${month}-${day}`;
-
-            // 2. 寻找页面中所有 <a> 标签
-            const links = document.querySelectorAll('a');
-            links.forEach(link => {
-              // 3. 如果链接文字中包含了“今日日志”或“今日计划”
-              if (link.textContent.includes('今日日志') || link.textContent.includes('今日计划')) {
-                // 4. 强制将其跳转链接重写为：#/daily/YYYY-MM-DD
-                link.href = `#/daily/${dateStr}`;
-              }
-            });
-          });
-        }
-      ]
+      }
     }
   </script>
   <!-- Docsify 核心脚本 -->

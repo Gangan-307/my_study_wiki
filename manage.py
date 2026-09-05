@@ -5,7 +5,11 @@ import re
 import shutil
 import subprocess
 from datetime import datetime, timedelta
-from PIL import Image
+
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
 
 # ================= 颜色配置 (ANSI Escape Codes) =================
 GREEN = "\033[92m"
@@ -27,7 +31,6 @@ CONFIG_FILE = "wiki_config.json"
 DEFAULT_CONFIG = {
     "image_dir": "images",
     "backup_dir": "backup/images_raw",
-    "sidebar_path": "_sidebar.md",
     "allowed_extensions": [".png", ".jpg", ".jpeg"],
     "daily_template": "# {date} 学习日志\n\n---\n\n## 🎯 今日计划\n- [ ] \n- [ ] \n\n---\n\n## 📝 学习记录\n### 1. 核心收获\n*   \n\n---\n\n## 🤔 今日复盘\n*   **🏆 今日最大收获**：\n*   **📈 待改进与明日计划**：\n",
     "weekly_template_header": "# 📊 本周技术周报总结 ({start_date} 至 {end_date})\n\n> **💡 系统提示**：本周报由 Wiki 自动化运维中枢通过自动读取日志汇编提炼生成。\n\n---\n\n## 💻 本周技术输入汇总\n",
@@ -38,7 +41,7 @@ def load_config():
     """读取或初始化配置文件"""
     if not os.path.exists(CONFIG_FILE):
         try:
-            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            with open(CONFIG_FILE, "w", encoding="utf-8", newline="\n") as f:
                 json.dump(DEFAULT_CONFIG, f, indent=4, ensure_ascii=False)
         except Exception as e:
             print(f"写入配置文件失败: {e}")
@@ -86,49 +89,27 @@ def create_daily_log_and_sandbox():
 
     if not os.path.exists(log_file_path):
         template = CONFIG.get("daily_template", "").format(date=today_str)
-        with open(log_file_path, "w", encoding="utf-8") as f:
+        with open(log_file_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(template)
         log_success(f"已生成今日日志模板: {log_file_path}")
     else:
         log_warn(f"今日日志文件已存在: {log_file_path}")
 
-    # 1.2 同步侧边栏
-    sidebar_path = CONFIG.get("sidebar_path", "_sidebar.md")
-    if os.path.exists(sidebar_path):
-        with open(sidebar_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
+    # 日志属于本地私有内容，不写入公开知识库的侧边栏。
+    log_info("今日日志仅保存在本地，不更新公共侧边栏。")
 
-        new_link_line = f"  * [{today_str} 日志](daily/{today_str}.md)\n"
-        link_exists = any(today_str in line for line in lines)
-
-        if not link_exists:
-            inserted = False
-            for idx, line in enumerate(lines):
-                if "📅 每日学习日志" in line:
-                    lines.insert(idx + 1, new_link_line)
-                    inserted = True
-                    break
-            if not inserted:
-                lines.append(new_link_line)
-
-            with open(sidebar_path, "w", encoding="utf-8") as f:
-                f.writelines(lines)
-            log_success("已自动将今日日志链接添加至侧边栏。")
-        else:
-            log_warn("侧边栏中已存在今天的日志链接。")
-
-    # 1.3 自动创建 VS Code 沙盒环境启动任务
+    # 1.2 自动创建 VS Code 沙盒环境启动任务
     vscode_dir = ".vscode"
     tasks_json_path = os.path.join(vscode_dir, "tasks.json")
     if not os.path.exists(vscode_dir):
         os.makedirs(vscode_dir)
     
     if not os.path.exists(tasks_json_path):
-        with open(tasks_json_path, "w", encoding="utf-8") as f:
+        with open(tasks_json_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(CONFIG.get("tasks_json_content", ""))
         log_success("已配置 VS Code 自动启动 Docsify 任务。")
 
-    # 1.4 打开整个项目空间及当前日志
+    # 1.3 打开整个项目空间及当前日志
     try:
         log_info("正在启动 VS Code 并加载项目服务...")
         # 打开项目根目录以加载 Task
@@ -142,6 +123,9 @@ def create_daily_log_and_sandbox():
 
 def compress_image(input_path, output_path):
     """底层自适应压缩核心"""
+    if Image is None:
+        raise RuntimeError("缺少 Pillow，请先执行: pip install Pillow")
+
     img = Image.open(input_path)
     ext = os.path.splitext(input_path)[1].lower()
     if ext == ".png":
@@ -168,7 +152,7 @@ def update_markdown_links(old_name, new_name):
                 
                 if old_name in content:
                     new_content = content.replace(old_name, new_name)
-                    with open(file_path, "w", encoding="utf-8") as f:
+                    with open(file_path, "w", encoding="utf-8", newline="\n") as f:
                         f.write(new_content)
                     modified_count += 1
                     print(f"    [替换链接] -> 修改文件: {file_path}")
@@ -178,6 +162,10 @@ def update_markdown_links(old_name, new_name):
 def optimize_images():
     """2. 智能压缩图片与原图交互式清理/备份 (新增 y/n 交互)"""
     log_info("2. 开始一键智能图像优化与备份...")
+    if Image is None:
+        log_error("图片压缩功能需要 Pillow，请先执行: pip install Pillow")
+        return
+
     img_dir = CONFIG.get("image_dir", "images")
     backup_dir = CONFIG.get("backup_dir", "backup/images_raw")
 
@@ -305,43 +293,12 @@ def generate_weekly_report():
             weekly_content += f"\n#### 🤔 当日总结复盘：\n{indented_review}\n"
         weekly_content += "\n---\n"
 
-    with open(weekly_file_path, "w", encoding="utf-8") as f:
+    with open(weekly_file_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(weekly_content)
     log_success(f"周报已聚合编译完成: {weekly_file_path}")
 
-    # 同步侧边栏目录
-    sidebar_path = CONFIG.get("sidebar_path", "_sidebar.md")
-    if os.path.exists(sidebar_path):
-        with open(sidebar_path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-
-        new_link_line = f"    * [{end_date} 周报](weekly/{end_date}_weekly.md)\n"
-        link_exists = any(f"{end_date}_weekly" in line for line in lines)
-
-        if not link_exists:
-            section_idx = -1
-            for idx, line in enumerate(lines):
-                if "📊 阶段周报总结" in line:
-                    section_idx = idx
-                    break
-
-            if section_idx != -1:
-                lines.insert(section_idx + 1, new_link_line)
-                log_success("侧边栏 [📊 阶段周报总结] 已完成周报挂载！")
-            else:
-                anchor_idx = -1
-                for idx, line in enumerate(lines):
-                    if "scratchpad.md" in line:
-                        anchor_idx = idx
-                        break
-                if anchor_idx != -1:
-                    lines.insert(anchor_idx + 1, f"  * 📊 阶段周报总结\n{new_link_line}")
-                    log_success("侧边栏未发现周报目录，已自动初始化并完成周报挂载。")
-                else:
-                    lines.append(f"  * 📊 阶段周报总结\n{new_link_line}")
-
-            with open(sidebar_path, "w", encoding="utf-8") as f:
-                f.writelines(lines)
+    # 周报与原始日志一样只在本地保存，避免公共导航指向私有文件。
+    log_info("阶段周报仅保存在本地，不更新公共侧边栏。")
 
     # 用编辑器载入生成的周报
     try:
@@ -369,7 +326,7 @@ def git_push_assets():
         else:
             log_success("本地代码版本递交成功！")
             log_info("正在安全推送到远程仓库 (git push)...")
-            subprocess.run(["git", "push", "origin", "master:main"], check=True)
+            subprocess.run(["git", "push", "origin", "main"], check=True)
             log_success("Wiki 项目资源已完美部署同步至 GitHub 仓库！")
 
     except subprocess.CalledProcessError as e:

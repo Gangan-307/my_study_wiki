@@ -43,5 +43,4 @@
     * RTOS 对比
       * [FreeRTOS vs RT-Thread](rtos/rtos-comparison.md)
     ```
-3.  **关联笔记**：在对比文档里，你可以使用 `[RT-Thread 详细笔记](rtos/rt-thread/rt-thread.md)` 这种链接方式，把知识点串联起来。
-
+3.  **关联笔记**：在对比文档里，可以通过 [RT-Thread 详细笔记](rt-thread/rt-thread.md) 把知识点串联起来。

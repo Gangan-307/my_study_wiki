@@ -201,7 +201,7 @@ git push -u origin main
 在搭建完基础系统后，日常编写笔记、处理截图、手动 Git 提交、以及启动本地服务器等繁琐步骤会产生较多重复性劳动。为了实现“零摩擦”的极客开发体验，我们使用 **Python 脚本** 和 **VS Code 自动任务机制** 建立了一套一键式自动化运维控制台。
 
 ### 1. 核心自动化功能
-*   **一键新建今日日志**：自动计算当天日期，生成标准 Markdown 模板，自动将其追加到 `_sidebar.md` 对应目录下，并直接在 VS Code 中为您打开。
+*   **一键新建今日日志**：自动计算当天日期、生成本地 Markdown 模板并在 VS Code 中打开。`daily/` 与 `weekly/` 已加入 `.gitignore`，不会进入公共仓库或公共侧边栏。
 *   **一键智能图片压缩**：自动扫描 `images/` 文件夹下所有新截图（PNG 格式），通过**自适应颜色量化算法**将几 MB 的波形图/大截图压缩至 100~200 KB（肉眼无损），自动规范化命名为 `opt_日期_序号.png`，并自动递归扫描替换整个项目中所有 `.md` 文件里的图片链接，最后自动清理本地原始大图。
 *   **一键开启开发沙盒**：自动为您配置 `.vscode/tasks.json`。只要您在控制台输入指令或打开项目，VS Code 会自动唤醒并在其**内部集成终端**中静默启动本地 Docsify 服务器，不再占用或弹窗外部 CMD 窗口。
 *   **一键打包部署 Git**：自动将所有修改打包（Git Stage），自动获取当前系统时间戳作为 Commit 信息进行提交，并一键推送到 GitHub 远程仓库，实现瞬间秒级部署。
@@ -228,12 +228,11 @@ from PIL import Image
 
 # ================= 基础全局配置 =================
 IMAGE_DIR = "images"
-SIDEBAR_PATH = "_sidebar.md"
 ALLOWED_EXTENSIONS = (".png", ".jpg", ".jpeg")
 # ===============================================
 
 def create_daily_log():
-    """1. 自动新建今日日志，并更新侧边栏链接"""
+    """1. 自动新建仅保存在本地的今日日志"""
     print("\n[正在执行] 1. 一键新建今日日志...")
     today_str = datetime.now().strftime("%Y-%m-%d")
     log_file_path = f"daily/{today_str}.md"
@@ -263,35 +262,11 @@ def create_daily_log():
 """
 
     if not os.path.exists(log_file_path):
-        with open(log_file_path, "w", encoding="utf-8") as f:
+        with open(log_file_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(template)
         print(f"  [成功] 已生成今日日志模板: {log_file_path}")
     else:
         print(f"  [提示] 今天的日志文件已存在: {log_file_path}")
-
-    if os.path.exists(SIDEBAR_PATH):
-        with open(SIDEBAR_PATH, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-
-        new_link_line = f"  * [{today_str} 日志](daily/{today_str}.md)\n"
-        link_exists = any(today_str in line for line in lines)
-
-        if not link_exists:
-            inserted = False
-            for idx, line in enumerate(lines):
-                if "📅 每日学习日志" in line:
-                    lines.insert(idx + 1, new_link_line)
-                    inserted = True
-                    break
-            
-            if not inserted:
-                lines.append(new_link_line)
-
-            with open(SIDEBAR_PATH, "w", encoding="utf-8") as f:
-                f.writelines(lines)
-            print("  [成功] 已将今日日志链接自动添加到 _sidebar.md")
-        else:
-            print("  [提示] _sidebar.md 中已存在今天的日志链接")
 
     try:
         subprocess.run(["code", log_file_path], shell=True)
@@ -456,7 +431,7 @@ def show_menu():
     print("=====================================================")
     print("               🚀  Wiki 控制")
     print("=====================================================")
-    print("   1. 📅 一键新建今日日志 (自动同步侧边栏/打开VS Code)")
+    print("   1. 📅 一键新建本地今日日志 (打开VS Code)")
     print("   2. 📸 一键智能压缩图片 (自动更新全局 Markdown 链接)")
     print("   3. 🔄 运行全部 (新建今日日志 + 压缩优化图片)")
     print("   4. 💻 一键开启开发沙盒 (VS Code 内部集成终端跑服务器)")
@@ -506,4 +481,3 @@ python manage.py
 ```
 
 以后您在本地进行文档管理时，双击运行该 `.bat` 文件，即可通过数字菜单一键调起以上所有的高级开发工作流。
-```
