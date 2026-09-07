@@ -1,4 +1,5 @@
 * [🏠 首页](README.md)
+* [📅 学习计划](study-plan.md)
 * [📝 临时速记](scratchpad.md)
 * [💻 C语言专题](c-language/pointer.md)
 * [🐧 嵌入式 Linux](embedded-linux/index.md)

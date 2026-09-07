@@ -1,4 +1,5 @@
 * [🏠 首页](README.md)
+* [📅 嵌入式学习总计划](study-plan.md)
 * [📝 临时速记 (草稿箱)](scratchpad.md)
 
 * 💻 C 语言与底层
