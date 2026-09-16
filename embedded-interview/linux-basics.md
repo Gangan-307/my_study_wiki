@@ -1,10 +1,10 @@
 # Linux 入门面试题
 
-[返回专区](index.md) | [复习与自测表](review-plan.md)
+[返回专区](/embedded-interview/index.md) | [复习与自测表](/embedded-interview/review-plan.md)
 
 学习要求：先通过泰山派和 WSL 理解实际命令，再回答进程、权限、网络和构建问题。当前以 Linux 使用与应用基础为主，内核驱动能力需要后续实验单独证明。
 
-## L01：程序、进程、线程与 PID 是什么？
+## L01：程序、进程、线程与 PID 是什么？ :id=l01
 
 **参考回答：** 程序是可执行代码等静态内容，进程是程序的一次运行实例，通常拥有独立虚拟地址空间。一个进程可有多个线程，它们共享地址空间和文件描述符等资源，但各有执行上下文与栈。常见用户接口中的 PID 标识进程，线程也有各自的内核标识。
 
@@ -24,7 +24,7 @@ wait "$demo_pid"
 
 默认 `kill` 发送 SIGTERM，请求退出；`wait` 此处可能报告进程被终止或返回非零，这是实验的预期结果。SIGKILL 则不能被捕获以执行用户态清理。
 
-## L02：普通用户、root、sudo 与文件权限有什么关系？
+## L02：普通用户、root、sudo 与文件权限有什么关系？ :id=l02
 
 **参考回答：** 日常开发使用普通用户，系统管理通过已授权的 `sudo` 执行。常见配置中 `sudo` 验证当前用户密码，`su -` 切换 root 通常验证目标 root 密码。文件权限结合用户、组、访问位和其他访问控制共同决定操作能否成功。
 
@@ -41,7 +41,7 @@ ls -l /userdata/workspace
 findmnt -T /userdata/workspace
 ```
 
-## L03：`systemctl`、PID 1 和 `systemd` 有什么关系？
+## L03：`systemctl`、PID 1 和 `systemd` 有什么关系？ :id=l03
 
 **参考回答：** Debian 常由 systemd 作为 PID 1 管理系统与服务；`systemctl` 是与其交互的控制工具，`ctl` 是 control 的命名缩写。`.service` 是被管理的单元，单元可能管理多个进程，`MainPID` 表示其中的主进程。
 
@@ -57,7 +57,7 @@ systemctl status ssh --no-pager -l
 sudo journalctl -u ssh -b -n 30 --no-pager
 ```
 
-## L04：SSH 超时、拒绝连接与 `Permission denied` 怎么区分？
+## L04：SSH 超时、拒绝连接与 `Permission denied` 怎么区分？ :id=l04
 
 **参考回答：** 超时通常先查地址、链路、路由和丢包/防火墙；拒绝连接通常意味着收到明确拒绝，可能没服务监听或被防火墙主动拒绝；认证阶段的 `Permission denied` 应查用户名、密码/密钥、账户状态、PAM 与 sshd 认证策略。
 
@@ -73,7 +73,7 @@ sudo /usr/sbin/sshd -T | grep -E 'permitrootlogin|passwordauthentication'
 
 `sshd -t` 无输出且返回成功，表示配置语法等检查通过；不代表所有用户均能登录。存在 `Match` 条件块时，应用 `sshd -T -C` 带实际连接参数检查对应配置，并结合认证日志判断。
 
-## L05：网口 `UP` 为什么还不能 SSH 或上网？
+## L05：网口 `UP` 为什么还不能 SSH 或上网？ :id=l05
 
 **参考回答：** 接口启用、底层链路成立、IP 地址、路由、DNS 和目标服务是不同层次。`UP` 主要表示接口被启用；以太网 `LOWER_UP` 通常表示已检测到底层链路。DHCP 可分配 IP、网关与 DNS；同网段互通不一定需要外网网关。
 
@@ -91,7 +91,7 @@ ip route get 223.5.5.5
 
 Wi-Fi 与网线并存时，确认测试流量走的接口；默认路由存在并不等于 Windows 共享已经正常转发。ICMP 被过滤也可能导致 Ping 失败，必要时用目标 TCP 服务验证。
 
-## L06：文件描述符是什么？`read/write` 一次就能完成吗？
+## L06：文件描述符是什么？`read/write` 一次就能完成吗？ :id=l06
 
 **参考回答：** 文件描述符是进程中用于引用已打开文件、Socket、管道等资源的小整数；常见标准输入、输出、错误分别为 0、1、2。POSIX `read/write` 通过返回值说明实际处理的字节数，可能短读、短写或被信号中断，调用者要按对象和错误类型处理。
 
@@ -99,7 +99,7 @@ Wi-Fi 与网线并存时，确认测试流量走的接口；默认路由存在�
 
 **面试追问：** `printf` 为什么不一定马上对应一次 `write`？应用缓冲区刷新与存储落盘又有什么区别？
 
-## L07：交叉编译是什么？为什么有文件也可能“无法执行”？
+## L07：交叉编译是什么？为什么有文件也可能“无法执行”？ :id=l07
 
 **参考回答：** 在一种主机环境构建另一目标环境运行的程序就是交叉编译，例如在 x86-64 WSL 为 AArch64 泰山派构建。需要匹配 CPU 架构、ABI、目标运行库和必要的 sysroot；目标程序还可能依赖动态加载器与共享库。
 
@@ -116,7 +116,7 @@ readelf -d ./hello
 
 分别核对文件类型、目标架构、解释器与所需库；这些只检查文件，不会启动目标程序。
 
-## L08：Bootloader、内核、设备树与根文件系统各做什么？
+## L08：Bootloader、内核、设备树与根文件系统各做什么？ :id=l08
 
 **参考回答：** 典型嵌入式 Linux 启动从 SoC BootROM 开始，后续可能经过多个固件阶段与 U-Boot；Bootloader 准备环境并加载内核及硬件描述，内核初始化子系统并挂载根文件系统，最终运行 PID 1 完成用户空间初始化。设备树描述硬件拓扑与资源，不是驱动程序本身。
 
@@ -134,7 +134,7 @@ readelf -d ./hello
 
 ## 继续学习
 
-- [Linux 使用基础](../embedded-linux/linux-foundations.md)、[泰山派实战](../embedded-linux/taishan-pi.md)
-- [系统编程](../embedded-linux/system-programming.md)、[交叉编译](../embedded-linux/cross-compilation.md)
-- [启动链](../embedded-linux/boot-chain.md)、[设备树与模块](../embedded-linux/kernel-device-tree.md)
-- [Linux 专项面试清单](../embedded-linux/review-checklist.md)
+- [Linux 使用基础](/embedded-linux/linux-foundations.md)、[泰山派实战](/embedded-linux/taishan-pi.md)
+- [系统编程](/embedded-linux/system-programming.md)、[交叉编译](/embedded-linux/cross-compilation.md)
+- [启动链](/embedded-linux/boot-chain.md)、[设备树与模块](/embedded-linux/kernel-device-tree.md)
+- [Linux 专项面试清单](/embedded-linux/review-checklist.md)

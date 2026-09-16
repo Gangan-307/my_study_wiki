@@ -8,13 +8,13 @@
 
 | 专题 | 题号 / 数量 | 应掌握的内容 | 当前优先级 |
 | :--- | :--- | :--- | :--- |
-| [C 语言与内存易错题](c-basics.md) | C01-C12 / 12 题 | 指针、字符串、限定符、生命周期、整数转换、位操作、对齐、回调 | P0 |
-| [MCU 与外设基础题](mcu-peripherals.md) | M01-M10 / 10 题 | GPIO、UART、I2C、SPI、中断、DMA、PWM、ADC、启动过程 | P0 |
-| [RTOS 与并发易错题](rtos.md) | R01-R10 / 10 题 | 调度、同步原语、ISR、优先级反转、死锁、栈、定时器、多核 | P0 |
-| [ESP32、BLE 与物联网通信](network-iot.md) | N01-N10 / 10 题 | Wi-Fi、TCP、分帧、GATT、重连、MQTT、TLS、OTA、低功耗 | P0，按实际项目选择 |
-| [Linux 入门面试题](linux-basics.md) | L01-L08 / 8 题 | 进程线程、权限、服务、SSH、路由、文件 I/O、交叉编译、启动链 | P1，完成实验后再写入技能 |
-| [工程调试与项目追问](debugging-projects.md) | D01-D10 / 10 题 | 构建、崩溃、内存、看门狗、日志、仪器、稳定性、项目表达 | P0 |
-| [两周复习与自测表](review-plan.md) | 覆盖全部 60 题 | 每日题目、实验、错题复习、项目口述 | 执行入口 |
+| [C 语言与内存易错题](/embedded-interview/c-basics.md) | C01-C12 / 12 题 | 指针、字符串、限定符、生命周期、整数转换、位操作、对齐、回调 | P0 |
+| [MCU 与外设基础题](/embedded-interview/mcu-peripherals.md) | M01-M10 / 10 题 | GPIO、UART、I2C、SPI、中断、DMA、PWM、ADC、启动过程 | P0 |
+| [RTOS 与并发易错题](/embedded-interview/rtos.md) | R01-R10 / 10 题 | 调度、同步原语、ISR、优先级反转、死锁、栈、定时器、多核 | P0 |
+| [ESP32、BLE 与物联网通信](/embedded-interview/network-iot.md) | N01-N10 / 10 题 | Wi-Fi、TCP、分帧、GATT、重连、MQTT、TLS、OTA、低功耗 | P0，按实际项目选择 |
+| [Linux 入门面试题](/embedded-interview/linux-basics.md) | L01-L08 / 8 题 | 进程线程、权限、服务、SSH、路由、文件 I/O、交叉编译、启动链 | P1，完成实验后再写入技能 |
+| [工程调试与项目追问](/embedded-interview/debugging-projects.md) | D01-D10 / 10 题 | 构建、崩溃、内存、看门狗、日志、仪器、稳定性、项目表达 | P0 |
+| [两周复习与自测表](/embedded-interview/review-plan.md) | 覆盖全部 60 题 | 每日题目、实验、错题复习、项目口述 | 执行入口 |
 
 P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗位要求和实验进度补充，不代表知识本身不重要。这不是特定公司的真题或频率统计。
 
@@ -41,17 +41,17 @@ P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗
 
 | 常见误答 | 应补充的边界 | 题目所在页 |
 | :--- | :--- | :--- |
-| 指针在任何系统上都是 4 字节 | 取决于目标 ABI 和指针类型，不能只看 CPU 位数 | [C01](c-basics.md) |
-| `volatile` 可以解决任务间共享数据问题 | 不保证原子性，也不建立线程间同步关系 | [C05](c-basics.md) |
-| 数组传给函数后仍能用 `sizeof` 算长度 | 数组形参会调整为指针形参 | [C01](c-basics.md) |
-| I2C 地址左移一位传入任何 API 都对 | 区分 7 位地址、总线地址字节和 SDK 参数约定 | [M04](mcu-peripherals.md) |
-| DMA 完成就说明串口最后一位已经发完 | 内存搬运完成与外设发送完成是两个事件 | [M07](mcu-peripherals.md) |
-| 所有 RTOS 的优先级数字越大越优先 | FreeRTOS 与 RT-Thread 的编号约定不同 | [R01](rtos.md) |
-| FreeRTOS 的栈大小参数总按字节计算 | 原生 FreeRTOS 与 ESP-IDF 的约定不同 | [R08](rtos.md) |
-| 一次 TCP `send` 对应一次 `recv` | TCP 提供字节流，应用负责确定消息边界 | [N02-N03](network-iot.md) |
-| CRC 正确就说明升级包可信 | CRC 检测意外损坏，真实性需要可信认证机制 | [N08-N09](network-iot.md) |
-| `enable` 就是立即启动服务 | `start` 管当前运行，`enable` 管启动关联 | [L03](linux-basics.md) |
-| 程序跑一次没崩就说明没有内存问题 | 越界和未定义行为未必立即报错 | [D02-D04](debugging-projects.md) |
+| 指针在任何系统上都是 4 字节 | 取决于目标 ABI 和指针类型，不能只看 CPU 位数 | [C01](/embedded-interview/c-basics.md#c01) |
+| `volatile` 可以解决任务间共享数据问题 | 不保证原子性，也不建立线程间同步关系 | [C05](/embedded-interview/c-basics.md#c05) |
+| 数组传给函数后仍能用 `sizeof` 算长度 | 数组形参会调整为指针形参 | [C01](/embedded-interview/c-basics.md#c01) |
+| I2C 地址左移一位传入任何 API 都对 | 区分 7 位地址、总线地址字节和 SDK 参数约定 | [M04](/embedded-interview/mcu-peripherals.md#m04) |
+| DMA 完成就说明串口最后一位已经发完 | 内存搬运完成与外设发送完成是两个事件 | [M07](/embedded-interview/mcu-peripherals.md#m07) |
+| 所有 RTOS 的优先级数字越大越优先 | FreeRTOS 与 RT-Thread 的编号约定不同 | [R01](/embedded-interview/rtos.md#r01) |
+| FreeRTOS 的栈大小参数总按字节计算 | 原生 FreeRTOS 与 ESP-IDF 的约定不同 | [R08](/embedded-interview/rtos.md#r08) |
+| 一次 TCP `send` 对应一次 `recv` | TCP 提供字节流，应用负责确定消息边界 | [N02](/embedded-interview/network-iot.md#n02)、[N03](/embedded-interview/network-iot.md#n03) |
+| CRC 正确就说明升级包可信 | CRC 检测意外损坏，真实性需要可信认证机制 | [N08](/embedded-interview/network-iot.md#n08)、[N09](/embedded-interview/network-iot.md#n09) |
+| `enable` 就是立即启动服务 | `start` 管当前运行，`enable` 管启动关联 | [L03](/embedded-interview/linux-basics.md#l03) |
+| 程序跑一次没崩就说明没有内存问题 | 越界和未定义行为未必立即报错 | [D02](/embedded-interview/debugging-projects.md#d02)、[D03](/embedded-interview/debugging-projects.md#d03)、[D04](/embedded-interview/debugging-projects.md#d04) |
 
 ## 结合当前项目准备证据
 
@@ -67,6 +67,6 @@ P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗
 ## 与现有知识库的关系
 
 - 这里用于面试问答、自测和定位薄弱点；深入学习继续回到各题末尾链接的专题。
-- 本地 `study-plan.md` 用于整体时间安排，不随公开仓库同步；本区[两周复习表](review-plan.md)占用原有复习时间，不额外叠加一套满负荷任务。
-- [嵌入式 Linux 专区](../embedded-linux/index.md)保留完整 Linux 实验路线。
+- 本地 `study-plan.md` 用于整体时间安排，不随公开仓库同步；本区[两周复习表](/embedded-interview/review-plan.md)占用原有复习时间，不额外叠加一套满负荷任务。
+- [嵌入式 Linux 专区](/embedded-linux/index.md)保留完整 Linux 实验路线。
 - 每日回答、面试反馈和未脱敏记录放在本地 `daily/` 或 `weekly/`，通用结论确认后再补入本区。

@@ -1,6 +1,6 @@
 # 两周复习与自测表
 
-[返回专区](index.md)
+[返回专区](/embedded-interview/index.md)
 
 这份表覆盖首批 60 题，用于在当前项目和实习基础上准备面试。建议每天 40-60 分钟；遇到大小周、加班或一道题需要补实验，可把两周延长到三周。复习与投递同时进行，完成题库不是投递前置条件。
 
@@ -17,18 +17,18 @@
 
 | 次序 | 新题 / 主题 | 本次验证或输出 |
 | :--- | :--- | :--- |
-| 1 | [C01-C05](c-basics.md)：数组、字符串、const、static、volatile | 闭卷解释数组传参，并画一次读改写交错 |
-| 2 | [C06-C10](c-basics.md)：生命周期、分配、转换、位操作、对齐 | 运行 C 基础实验，解释平台相关输出 |
-| 3 | [C11-C12](c-basics.md) + [M01-M03](mcu-peripherals.md)：宏、回调、GPIO、UART | 画 UART 接收缓冲区与回调的生命周期 |
-| 4 | [M04-M08](mcu-peripherals.md)：I2C、SPI、中断、DMA、PWM | 核对一个器件地址或定时器计算，记录依据 |
-| 5 | [M09-M10](mcu-peripherals.md) + [R01-R03](rtos.md)：ADC、启动、调度、同步选择 | 找到实际启动入口；列出项目任务和阻塞点 |
-| 6 | [R04-R08](rtos.md)：反转、ISR、队列、死锁、栈 | 检查队列数据所有权，确认栈 API 单位 |
-| 7 | [R09-R10](rtos.md) + [N01-N03](network-iot.md)：定时器、多核、联网、分帧 | 口述半包/多帧处理，补一个坏长度用例 |
-| 8 | [N04-N08](network-iot.md)：BLE、重连、MQTT、TLS | 核对一个 GATT 特征、CCCD 与实际 MTU |
-| 9 | [N09-N10](network-iot.md) + [L01-L03](linux-basics.md)：OTA、低功耗、进程、权限、服务 | 用自己的后台 sleep 验证 PID，并查 SSH 状态 |
-| 10 | [L04-L08](linux-basics.md)：SSH、路由、I/O、交叉编译、启动链 | 说明一次已遇到的认证或网口问题属于哪一层 |
-| 11 | [D01-D05](debugging-projects.md)：构建、崩溃、内存与时序 | 整理一个故障的现象、证据与排除过程 |
-| 12 | [D06-D10](debugging-projects.md)：看门狗、工具、验证、Git、项目表达 | 运行 hello/GDB/strace，写两分钟项目提纲 |
+| 1 | [C01-C05](/embedded-interview/c-basics.md#c01)：数组、字符串、const、static、volatile | 闭卷解释数组传参，并画一次读改写交错 |
+| 2 | [C06-C10](/embedded-interview/c-basics.md#c06)：生命周期、分配、转换、位操作、对齐 | 运行 C 基础实验，解释平台相关输出 |
+| 3 | [C11-C12](/embedded-interview/c-basics.md#c11) + [M01-M03](/embedded-interview/mcu-peripherals.md#m01)：宏、回调、GPIO、UART | 画 UART 接收缓冲区与回调的生命周期 |
+| 4 | [M04-M08](/embedded-interview/mcu-peripherals.md#m04)：I2C、SPI、中断、DMA、PWM | 核对一个器件地址或定时器计算，记录依据 |
+| 5 | [M09-M10](/embedded-interview/mcu-peripherals.md#m09) + [R01-R03](/embedded-interview/rtos.md#r01)：ADC、启动、调度、同步选择 | 找到实际启动入口；列出项目任务和阻塞点 |
+| 6 | [R04-R08](/embedded-interview/rtos.md#r04)：反转、ISR、队列、死锁、栈 | 检查队列数据所有权，确认栈 API 单位 |
+| 7 | [R09-R10](/embedded-interview/rtos.md#r09) + [N01-N03](/embedded-interview/network-iot.md#n01)：定时器、多核、联网、分帧 | 口述半包/多帧处理，补一个坏长度用例 |
+| 8 | [N04-N08](/embedded-interview/network-iot.md#n04)：BLE、重连、MQTT、TLS | 核对一个 GATT 特征、CCCD 与实际 MTU |
+| 9 | [N09-N10](/embedded-interview/network-iot.md#n09) + [L01-L03](/embedded-interview/linux-basics.md#l01)：OTA、低功耗、进程、权限、服务 | 用自己的后台 sleep 验证 PID，并查 SSH 状态 |
+| 10 | [L04-L08](/embedded-interview/linux-basics.md#l04)：SSH、路由、I/O、交叉编译、启动链 | 说明一次已遇到的认证或网口问题属于哪一层 |
+| 11 | [D01-D05](/embedded-interview/debugging-projects.md#d01)：构建、崩溃、内存与时序 | 整理一个故障的现象、证据与排除过程 |
+| 12 | [D06-D10](/embedded-interview/debugging-projects.md#d06)：看门狗、工具、验证、Git、项目表达 | 运行 hello/GDB/strace，写两分钟项目提纲 |
 | 13 | 复测错题，优先 C、MCU、RTOS | 随机抽 10 题，先回答后看参考，给出真实等级 |
 | 14 | 模拟面试与简历核对 | 2 分钟项目介绍 + 15 分钟追问 + 10 分钟改代码 |
 

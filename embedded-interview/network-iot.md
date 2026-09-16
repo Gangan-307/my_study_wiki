@@ -1,10 +1,10 @@
 # ESP32、BLE 与物联网通信
 
-[返回专区](index.md) | [复习与自测表](review-plan.md)
+[返回专区](/embedded-interview/index.md) | [复习与自测表](/embedded-interview/review-plan.md)
 
 学习要求：能把“连接成功”拆成具体阶段，说明协议消息的边界、确认方式、超时和重试。ESP32 是系列芯片，不同型号的 Wi-Fi 频段、BLE/经典蓝牙和内存能力不同，回答时带上型号与 SDK 版本。
 
-## N01：Wi-Fi 已连接为什么还不能上网？
+## N01：Wi-Fi 已连接为什么还不能上网？ :id=n01
 
 **参考回答：** 扫描到 SSID、与 AP 关联、完成认证/密钥协商、取得地址与路由、完成 DNS 解析、访问目标服务是不同阶段。以 WPA2-Personal 为例，关联后的四次握手完成才建立可用加密链路；IPv4 常通过 DHCP 取得配置，也可能采用静态配置。
 
@@ -12,7 +12,7 @@
 
 **面试追问：** 能 Ping IP、不能访问域名，先查哪一层？电脑通过 5GHz Wi-Fi 上网再用网线共享，为什么不要求开发板支持 5GHz？
 
-## N02：TCP 与 UDP 有什么区别？TCP 可靠到什么程度？
+## N02：TCP 与 UDP 有什么区别？TCP 可靠到什么程度？ :id=n02
 
 **参考回答：** TCP 提供连接内有序的可靠字节流，有重传、流量控制和拥塞控制；UDP 保留数据报边界，但不提供 TCP 式的可靠、有序交付。TCP 的 `send` 成功通常表示数据被本地协议栈接收，不代表对端业务已完成处理。
 
@@ -20,7 +20,7 @@
 
 **面试追问：** 服务端处理完指令后回包丢失，客户端重试，怎样避免执行两次？
 
-## N03：什么是粘包、半包？怎么设计解析器？
+## N03：什么是粘包、半包？怎么设计解析器？ :id=n03
 
 **参考回答：** 对 TCP 字节流，应由应用协议定义消息边界，例如固定长度、分隔符，或“帧头 + 长度 + 内容 + 校验”。接收端维护累积缓冲区，数据不足就等待，完整后消费一帧并继续解析剩余数据，支持一次收到多帧。
 
@@ -28,7 +28,7 @@
 
 **面试追问：** 长度字节声称载荷有 65535 字节，而缓冲区只有 256 字节，应该在什么阶段拒绝？坏帧后如何重新同步？
 
-## N04：BLE 的 GAP、GATT、Service、Characteristic 是什么？
+## N04：BLE 的 GAP、GATT、Service、Characteristic 是什么？ :id=n04
 
 **参考回答：** GAP 涉及发现、连接与安全等通用过程；GATT 基于 ATT 组织服务与特征。Service 表示一组相关功能，Characteristic 包含值及读写、通知等属性，Descriptor 描述附加信息，CCCD 常用于客户端订阅通知或指示。
 
@@ -36,7 +36,7 @@
 
 **面试追问：** 手表有通知数据，手机为什么收不到？怎样核对连接、CCCD、权限、特征值长度和发送返回值？
 
-## N05：BLE Notification、Indication 和 MTU 有什么关系？
+## N05：BLE Notification、Indication 和 MTU 有什么关系？ :id=n05
 
 **参考回答：** Notification 不要求 ATT 层确认，Indication 要求对端 ATT 确认，但确认仍不等于业务处理完成。常见默认 ATT MTU 为 23，普通通知或写请求的值长度通常最多为 `ATT_MTU - 3`；其他 ATT 操作开销不同，应按操作类型分析。
 
@@ -44,7 +44,7 @@
 
 **面试追问：** 传 200 字节业务数据时，怎样协商能力、分片、排序、重组并确认完整性？同一连接为什么手机型号不同吞吐不同？
 
-## N06：断线重连为什么不应该放在一个无限循环里？
+## N06：断线重连为什么不应该放在一个无限循环里？ :id=n06
 
 **参考回答：** 用状态机描述未连接、连接中、已连接、退避等待等状态，记录断线原因，限定单次尝试超时，采用有上限的退避与必要的随机抖动。重连后重新确认会话、订阅和数据同步状态，清理旧资源。
 
@@ -52,7 +52,7 @@
 
 **面试追问：** 缓存设备地址直连失败后如何回退扫描？网络反复断开时，怎样保证始终只有一个重连流程？
 
-## N07：MQTT 的 QoS 0、1、2 是什么？
+## N07：MQTT 的 QoS 0、1、2 是什么？ :id=n07
 
 **参考回答：** QoS 0 是最多一次，QoS 1 是至少一次，QoS 2 通过协议握手实现相应 MQTT 传输链路上的恰好一次交付。发布到 Broker 与 Broker 到订阅者是不同传输链路，不能简单认为端到端业务只会执行一次。
 
@@ -60,7 +60,7 @@
 
 **面试追问：** 控制继电器时重发“切换状态”和重发“设置为开”有什么区别？离线期间的消息是否应全部补执行？
 
-## N08：HTTPS/TLS 比 HTTP 多了什么？为什么板子上容易失败？
+## N08：HTTPS/TLS 比 HTTP 多了什么？为什么板子上容易失败？ :id=n08
 
 **参考回答：** TLS 提供加密、完整性保护和身份认证机制。客户端需要验证可信证书链和主机名，典型 X.509 验证还依赖合理的系统时间。嵌入式端同时要考虑握手峰值内存、证书、熵源、网络超时和 SDK 能力。
 
@@ -68,7 +68,7 @@
 
 **面试追问：** 设备日期停在过去导致证书错误时，应检查什么？PSRAM 能否替代所有内部 RAM 分配，依据是什么？
 
-## N09：OTA 为什么不能只写“下载固件再重启”？
+## N09：OTA 为什么不能只写“下载固件再重启”？ :id=n09
 
 **参考回答：** OTA 包括检查版本和目标硬件、获取可信升级信息、校验分区与镜像边界、下载写入、完整性与真实性验证、切换启动目标、启动自检和必要的回滚。还要处理下载断线、写入失败、断电、空间不足和低电量。
 
@@ -76,7 +76,7 @@
 
 **面试追问：** 下载到一半断电、切换启动标记时断电、新固件开机即崩溃，各由哪一层恢复？自己的工程实际实现了哪些保护？
 
-## N10：低功耗看哪些指标？为什么简单延时不够？
+## N10：低功耗看哪些指标？为什么简单延时不够？ :id=n10
 
 **参考回答：** 关注各状态电流、持续时间和唤醒频率，估算平均功耗，再用测量验证。可减少广播或轮询、调整连接参数、关闭不使用的外设，并结合轻睡眠、深睡眠和实际唤醒源。RTOS 阻塞能释放 CPU，但不保证硬件自动进入最低功耗状态。
 
@@ -94,7 +94,7 @@
 
 ## 继续学习
 
-- [ESP-IDF](../esp/esp32env.md)、[Wi-Fi 连接机制](../middleware-algorithm/wifi/protocol.md)
-- [BLE 基础](../middleware-algorithm/ble/basic.md)、[低功耗](../middleware-algorithm/ble/lowpower.md)
-- [TCP/UDP](../middleware-algorithm/wireless-network/tcp-udp.md)、[MQTT](../middleware-algorithm/wireless-network/mqtt.md)
-- [OTA 专题](../middleware-algorithm/ble/ota.md)
+- [ESP-IDF](/esp/esp32env.md)、[Wi-Fi 连接机制](/middleware-algorithm/wifi/protocol.md)
+- [BLE 基础](/middleware-algorithm/ble/basic.md)、[低功耗](/middleware-algorithm/ble/lowpower.md)
+- [TCP/UDP](/middleware-algorithm/wireless-network/tcp-udp.md)、[MQTT](/middleware-algorithm/wireless-network/mqtt.md)
+- [OTA 专题](/middleware-algorithm/ble/ota.md)
