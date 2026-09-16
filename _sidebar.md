@@ -2,6 +2,16 @@
 * [📅 嵌入式学习总计划](study-plan.md)
 * [📝 临时速记 (草稿箱)](scratchpad.md)
 
+* 嵌入式面试八股
+  * [专区总览与易错速查](embedded-interview/index.md)
+  * [C 语言与内存易错题](embedded-interview/c-basics.md)
+  * [MCU 与外设基础题](embedded-interview/mcu-peripherals.md)
+  * [RTOS 与并发易错题](embedded-interview/rtos.md)
+  * [ESP32、BLE 与物联网通信](embedded-interview/network-iot.md)
+  * [Linux 入门面试题](embedded-interview/linux-basics.md)
+  * [工程调试与项目追问](embedded-interview/debugging-projects.md)
+  * [两周复习与自测表](embedded-interview/review-plan.md)
+
 * 💻 C 语言与底层
   * [C 语言-运算符专题](c-language/operators.md)
   * [C 语言-枚举专题](c-language/enums.md)
@@ -40,6 +50,7 @@
   * [📅 两个月学习路线](embedded-linux/roadmap.md)
   * 基础与应用开发
     * [⌨️ Linux 使用基础](embedded-linux/linux-foundations.md)
+    * [基础命令词源与速查](embedded-linux/basic-commands.md)
     * [🔨 交叉编译、构建与 ELF](embedded-linux/cross-compilation.md)
     * [🧵 Linux 系统编程](embedded-linux/system-programming.md)
   * 系统与驱动

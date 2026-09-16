@@ -37,6 +37,7 @@ Buildroot 定制系统 + 综合项目
 
 - [两个月学习路线](roadmap.md)：按当前实习节奏拆分到 8 周。
 - [Linux 使用基础](linux-foundations.md)：命令、权限、进程、网络、日志和 Shell。
+- [基础命令词源与速查](basic-commands.md)：按 14 组整理常用命令的名称、用途、示例与易错点。
 - [交叉编译、构建与 ELF](cross-compilation.md)：主机与目标机、工具链、Make/CMake、动态链接。
 - [Linux 系统编程](system-programming.md)：文件 I/O、线程、IPC、Socket 和 I/O 多路复用。
 
