@@ -45,7 +45,7 @@ git clone https://gitee.com/EspressifSystems/esp-gitee-tools.git
 # 设置国内下载源
 export IDF_GITHUB_ASSETS="dl.espressif.cn/github_assets"
 
-# 运行安装脚本（可指定芯片，如 esp32s3；若需支持所有芯片则不加参数或写 all）
+# 运行安装脚本（可指定芯片，如 esp32s3；若需支持所有芯片则不加参数或写all）
 ./install.sh esp32s3
 ```
 
