@@ -36,3 +36,4 @@
 3. **多维检索**：点击左上角的 **“搜索框”**，输入如“指针”、“DMA”、“互斥锁”等，可瞬间跨学科检索。
 4. **主动回忆（卡片复习法）**：先只看题目，闭卷回答，再对照参考答案；用实验验证易错点，并准备自己的项目例子。
 5. **学习记录**：每日学习日志与阶段周报仅保存在本地，不随公开知识库同步。
+6. **针对目标公司**：海康威视笔试已单独成区——[总分析与真题](embedded-interview/hikvision-written-test.md)、[2019 多媒体卷](embedded-interview/hikvision-2019-multimedia.md)、[更早年份与对照卷](embedded-interview/hikvision-earlier-papers.md)，以及一份[同风格自编模拟卷](embedded-interview/hikvision-mock-paper.md)（**非真题**）。

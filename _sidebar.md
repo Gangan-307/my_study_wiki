@@ -11,6 +11,10 @@
   * [Linux 入门面试题](embedded-interview/linux-basics.md)
   * [工程调试与项目追问](embedded-interview/debugging-projects.md)
   * [两周复习与自测表](embedded-interview/review-plan.md)
+  * [海康威视笔试·总分析与真题](embedded-interview/hikvision-written-test.md)
+  * [海康威视笔试·2019 多媒体卷](embedded-interview/hikvision-2019-multimedia.md)
+  * [海康威视笔试·更早年份与对照卷](embedded-interview/hikvision-earlier-papers.md)
+  * [海康风格模拟卷（自编）](embedded-interview/hikvision-mock-paper.md)
 
 * 💻 C 语言与底层
   * [C 语言-运算符专题](c-language/operators.md)

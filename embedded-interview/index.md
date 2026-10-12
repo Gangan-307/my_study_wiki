@@ -15,8 +15,23 @@
 | [Linux 入门面试题](/embedded-interview/linux-basics.md) | L01-L08 / 8 题 | 进程线程、权限、服务、SSH、路由、文件 I/O、交叉编译、启动链 | P1，完成实验后再写入技能 |
 | [工程调试与项目追问](/embedded-interview/debugging-projects.md) | D01-D10 / 10 题 | 构建、崩溃、内存、看门狗、日志、仪器、稳定性、项目表达 | P0 |
 | [两周复习与自测表](/embedded-interview/review-plan.md) | 覆盖全部 60 题 | 每日题目、实验、错题复习、项目口述 | 执行入口 |
+| [海康威视笔试·总分析与真题](/embedded-interview/hikvision-written-test.md) | 6 套卷 + 考点榜 | 笔试形式、跨卷考点统计、真题精编、备考映射 | 投海康时必读 |
+| [海康威视笔试·2019 多媒体卷](/embedded-interview/hikvision-2019-multimedia.md) | 27 题 | 完整卷面 + DVR 存储估算、音频采样/I2S 计算 | 投海康时必读 |
+| [海康威视笔试·更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md) | 2013–2024 若干套 | `#pragma pack` 经典题、手写 memcpy、智力题、跨岗位差异 | 投海康时选读 |
+| [海康风格模拟卷（自编）](/embedded-interview/hikvision-mock-paper.md) | 24 题闭卷 | 仿真实卷型自测，含全部答案与解析 | 投海康前自测 |
 
-P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗位要求和实验进度补充，不代表知识本身不重要。这不是特定公司的真题或频率统计。
+P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗位要求和实验进度补充，不代表知识本身不重要。**上述 60 题是通识题库，不是特定公司的真题或频率统计。**
+
+## 公司真题专区：海康威视
+
+真题类内容单独成区，与通识题库分开维护：
+
+- [海康威视笔试·总分析与真题](/embedded-interview/hikvision-written-test.md) —— 笔试形式、跨 6 套卷的考点榜、真题精编、与上面 60 题的备考映射。
+- [海康威视笔试·2019 多媒体卷](/embedded-interview/hikvision-2019-multimedia.md) —— 完整卷面与业务计算题。
+- [海康威视笔试·更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md) —— 2013/2014/2018/2024 各卷与抓取失败清单。
+- [海康风格模拟卷（自编）](/embedded-interview/hikvision-mock-paper.md) —— 基于真题考点分布自编的闭卷自测卷（**明确非真题**）。
+
+维护约定：真题类页面必须逐题标注来源与核对状态（`【原文】`/`【单一来源】`/`【自核】`），**题面缺失就写缺失，不代拟题面**；发现答案与题面矛盾时列表保留，不擅自"修正"成看起来对的版本。
 
 ## 每题怎么使用
 
