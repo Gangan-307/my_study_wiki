@@ -15,6 +15,7 @@
   * [海康威视笔试·2019 多媒体卷](embedded-interview/hikvision-2019-multimedia.md)
   * [海康威视笔试·更早年份与对照卷](embedded-interview/hikvision-earlier-papers.md)
   * [海康风格模拟卷（自编）](embedded-interview/hikvision-mock-paper.md)
+  * [海康威视笔试·第一批卷（对话实录）](embedded-interview/hikvision-first.md)
 
 * 💻 C 语言与底层
   * [C 语言-运算符专题](c-language/operators.md)

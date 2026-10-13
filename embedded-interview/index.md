@@ -19,6 +19,7 @@
 | [海康威视笔试·2019 多媒体卷](/embedded-interview/hikvision-2019-multimedia.md) | 27 题 | 完整卷面 + DVR 存储估算、音频采样/I2S 计算 | 投海康时必读 |
 | [海康威视笔试·更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md) | 2013–2024 若干套 | `#pragma pack` 经典题、手写 memcpy、智力题、跨岗位差异 | 投海康时选读 |
 | [海康风格模拟卷（自编）](/embedded-interview/hikvision-mock-paper.md) | 24 题闭卷 | 仿真实卷型自测，含全部答案与解析 | 投海康前自测 |
+| [海康威视笔试·第一批卷（对话实录）](/embedded-interview/hikvision-first.md) | 20 选择 + 2 编程 | 逐题详解与知识扩充，标注对话原文/自核/存疑 | 投海康时必读 |
 
 P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗位要求和实验进度补充，不代表知识本身不重要。**上述 60 题是通识题库，不是特定公司的真题或频率统计。**
 
@@ -30,6 +31,7 @@ P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗
 - [海康威视笔试·2019 多媒体卷](/embedded-interview/hikvision-2019-multimedia.md) —— 完整卷面与业务计算题。
 - [海康威视笔试·更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md) —— 2013/2014/2018/2024 各卷与抓取失败清单。
 - [海康风格模拟卷（自编）](/embedded-interview/hikvision-mock-paper.md) —— 基于真题考点分布自编的闭卷自测卷（**明确非真题**）。
+- [海康威视笔试·第一批卷（对话实录）](/embedded-interview/hikvision-first.md) —— 与 DeepSeek 的逐题复盘对话整理：20 道选择/不定项 + 2 道编程，逐题详解、知识扩充与核对状态标注。
 
 维护约定：真题类页面必须逐题标注来源与核对状态（`【原文】`/`【单一来源】`/`【自核】`），**题面缺失就写缺失，不代拟题面**；发现答案与题面矛盾时列表保留，不擅自"修正"成看起来对的版本。
 
