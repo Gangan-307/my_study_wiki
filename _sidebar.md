@@ -10,6 +10,7 @@
   * [ESP32、BLE 与物联网通信](embedded-interview/network-iot.md)
   * [Linux 入门面试题](embedded-interview/linux-basics.md)
   * [工程调试与项目追问](embedded-interview/debugging-projects.md)
+  * [简历延伸问答（其他知识点）](embedded-interview/resume-based-faq.md)
   * [两周复习与自测表](embedded-interview/review-plan.md)
   * [海康威视笔试·总分析与真题](embedded-interview/hikvision-written-test.md)
   * [海康威视笔试·2019 多媒体卷](embedded-interview/hikvision-2019-multimedia.md)

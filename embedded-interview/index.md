@@ -14,6 +14,7 @@
 | [ESP32、BLE 与物联网通信](/embedded-interview/network-iot.md) | N01-N10 / 10 题 | Wi-Fi、TCP、分帧、GATT、重连、MQTT、TLS、OTA、低功耗 | P0，按实际项目选择 |
 | [Linux 入门面试题](/embedded-interview/linux-basics.md) | L01-L08 / 8 题 | 进程线程、权限、服务、SSH、路由、文件 I/O、交叉编译、启动链 | P1，完成实验后再写入技能 |
 | [工程调试与项目追问](/embedded-interview/debugging-projects.md) | D01-D10 / 10 题 | 构建、崩溃、内存、看门狗、日志、仪器、稳定性、项目表达 | P0 |
+| [简历延伸问答（其他可能被问到的知识点）](/embedded-interview/resume-based-faq.md) | E01-E20 / 20 题 | 编译器属性、Flash 分段、Cortex-M 异常与 HardFault、MPU、时钟树、OTA 分区、TLS 内存、CRC 选型、交叉编译 Sysroot、MCU 与 Linux 对比 | P1，投递前按简历关键词过一遍 |
 | [两周复习与自测表](/embedded-interview/review-plan.md) | 覆盖全部 60 题 | 每日题目、实验、错题复习、项目口述 | 执行入口 |
 | [海康威视笔试·总分析与真题](/embedded-interview/hikvision-written-test.md) | 6 套卷 + 考点榜 | 笔试形式、跨卷考点统计、真题精编、备考映射 | 投海康时必读 |
 | [海康威视笔试·2019 多媒体卷](/embedded-interview/hikvision-2019-multimedia.md) | 27 题 | 完整卷面 + DVR 存储估算、音频采样/I2S 计算 | 投海康时必读 |
@@ -22,6 +23,8 @@
 | [海康威视笔试·第一批卷（对话实录）](/embedded-interview/hikvision-first.md) | 20 选择 + 2 编程 | 逐题详解与知识扩充，标注对话原文/自核/存疑 | 投海康时必读 |
 
 P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗位要求和实验进度补充，不代表知识本身不重要。**上述 60 题是通识题库，不是特定公司的真题或频率统计。**
+
+`resume-based-faq.md` 是配套的**延伸层**：不重复上面 60 题，只补"简历上出现某个词、面试官顺手追下去"的那批知识点，每题都标注了简历锚点（`S1`–`S7` / `W1`–`W3` / `D1`–`D3`）或"防御"字样——标防御的只讲原理，不往项目上引。
 
 ## 公司真题专区：海康威视
 
