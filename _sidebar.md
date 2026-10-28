@@ -16,6 +16,7 @@
   * [海康威视笔试·2019 多媒体卷](embedded-interview/hikvision-2019-multimedia.md)
   * [海康威视笔试·更早年份与对照卷](embedded-interview/hikvision-earlier-papers.md)
   * [海康风格模拟卷（自编）](embedded-interview/hikvision-mock-paper.md)
+  * [嵌入式笔试模拟卷·三套（自编）](embedded-interview/embedded-mock-paper-3sets.md)
   * [海康威视笔试·第一批卷（对话实录）](embedded-interview/hikvision-first.md)
 
 * 💻 C 语言与底层
