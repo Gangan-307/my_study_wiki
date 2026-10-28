@@ -1,5 +1,5 @@
 > ⚠️ **中间稿，请勿作为复习入口。** 本文件是采集过程的原始记录，未经上级逐题复核，已发现错误（如 A3 题把原文的 `unsigned char data[10]` 误记为 `unsigned int`，选项 `1212345890` 误记为残缺）。
-> **正式内容请看：** [海康笔试总分析](embedded-interview/hikvision-written-test.md)、[2019 多媒体卷](embedded-interview/hikvision-2019-multimedia.md)、[更早年份与对照卷](embedded-interview/hikvision-earlier-papers.md)。
+> **正式内容请看：** [海康笔试总分析](/embedded-interview/hikvision-written-test.md)、[2019 多媒体卷](/embedded-interview/hikvision-2019-multimedia.md)、[更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md)。
 
 # 海康威视 嵌入式软件开发 笔试 —— C 语言 / 数据结构与算法 真题抓取报告
 

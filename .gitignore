@@ -3,3 +3,14 @@
 /weekly/
 /study-plan.md
 /roadmap.md
+
+# 一次性临时脚本与中间产物
+/tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Node
+node_modules/
