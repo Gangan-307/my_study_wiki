@@ -17,6 +17,7 @@
   * [海康威视笔试·更早年份与对照卷](embedded-interview/hikvision-earlier-papers.md)
   * [海康风格模拟卷（自编）](embedded-interview/hikvision-mock-paper.md)
   * [嵌入式笔试模拟卷·三套（自编）](embedded-interview/embedded-mock-paper-3sets.md)
+  * [C++ 笔试题目解析](embedded-interview/C++笔试题目解析.md)
   * [海康威视笔试·第一批卷（对话实录）](embedded-interview/hikvision-first.md)
 
 * 💻 C 语言与底层
@@ -34,6 +35,7 @@
   * [C 语言-内存布局与未定义行为专题](c-language/memory-undefined-behavior.md)
   * [C 语言-中断、并发与 volatile 专题](c-language/isr-concurrency.md)
   * [C 语言-嵌入式可靠性与测试专题](c-language/reliability-testing.md)
+  * [🧪 练习：类型实验解答](c-language/practice/type_lab_solution.md)
 
 * 💾 芯片平台与开发 (MCU)
   * [📶 ESP32 架构与 ESP-IDF](esp/esp32env.md)
@@ -51,6 +53,7 @@
 * 🐧  实时操作系统 (RTOS)
   * [🚀 FreeRTOS 核心机制](rtos/freertos/freertos.md)
   * [⚓ RT-Thread 构建系统](rtos/rt-thread/rt-thread.md)
+  * [⚖️ FreeRTOS vs RT-Thread 对比](rtos/rtos-comparison.md)
 
 * 🐧 嵌入式 Linux
   * [🧭 专区总览与学习地图](embedded-linux/index.md)

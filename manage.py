@@ -142,7 +142,7 @@ def update_markdown_links(old_name, new_name):
     """遍历全站更新 Markdown 的图片路径链接"""
     modified_count = 0
     for root, dirs, files in os.walk("."):
-        if any(ignored in root for ignored in [".git", "node_modules", "backup"]):
+        if any(ignored in root for ignored in [".git", "node_modules", "backup", "tmp", "_raw", "job-search", "__pycache__"]):
             continue
         for file in files:
             if file.endswith(".md"):

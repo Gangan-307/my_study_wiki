@@ -78,7 +78,17 @@
       // 全局搜索插件配置
       search: {
         maxAge: 86400000,
-        paths: 'auto',
+        paths: [
+          '/',
+          '/embedded-interview/',
+          '/embedded-linux/',
+          '/c-language/',
+          '/hardware-drivers/',
+          '/middleware-algorithm/',
+          '/rtos/',
+          '/esp/',
+          '/tools/'
+        ],
         placeholder: '搜索知识点...',
         noData: '未找到相关结果',
         depth: 6

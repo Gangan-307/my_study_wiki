@@ -21,6 +21,8 @@
 | [海康威视笔试·更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md) | 2013–2024 若干套 | `#pragma pack` 经典题、手写 memcpy、智力题、跨岗位差异 | 投海康时选读 |
 | [海康风格模拟卷（自编）](/embedded-interview/hikvision-mock-paper.md) | 24 题闭卷 | 仿真实卷型自测，含全部答案与解析 | 投海康前自测 |
 | [海康威视笔试·第一批卷（对话实录）](/embedded-interview/hikvision-first.md) | 20 选择 + 2 编程 | 逐题详解与知识扩充，标注对话原文/自核/存疑 | 投海康时必读 |
+| [嵌入式笔试模拟卷·三套（自编）](/embedded-interview/embedded-mock-paper-3sets.md) | 3 套 × 4 大题型 | 单选 + 不定项 + 填空 + 逻辑问答 + 算法，含全部解析与复习页索引 | 投递前闭卷自测 |
+| [C++ 笔试题目解析](/embedded-interview/C++笔试题目解析.md) | 单选/多选/简答/编程 | 构造函数、析构、引用与指针、`sizeof`、内存分配、链表，逐题答案与延伸知识点 | 投 C++ 相关岗时选读 |
 
 P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗位要求和实验进度补充，不代表知识本身不重要。**上述 60 题是通识题库，不是特定公司的真题或频率统计。**
 
@@ -35,6 +37,8 @@ P0 表示当前投递 MCU、ESP32、RTOS 岗位时优先准备；P1 表示随岗
 - [海康威视笔试·更早年份与对照卷](/embedded-interview/hikvision-earlier-papers.md) —— 2013/2014/2018/2024 各卷与抓取失败清单。
 - [海康风格模拟卷（自编）](/embedded-interview/hikvision-mock-paper.md) —— 基于真题考点分布自编的闭卷自测卷（**明确非真题**）。
 - [海康威视笔试·第一批卷（对话实录）](/embedded-interview/hikvision-first.md) —— 与 DeepSeek 的逐题复盘对话整理：20 道选择/不定项 + 2 道编程，逐题详解、知识扩充与核对状态标注。
+- [嵌入式笔试模拟卷·三套（自编）](/embedded-interview/embedded-mock-paper-3sets.md) —— 卷 A/B/C 各含单选、不定项、填空、逻辑问答与算法题，考点兼顾真题方向与真实板级场景（**明确非真题**）。
+- [C++ 笔试题目解析](/embedded-interview/C++笔试题目解析.md) —— C++ 单选/多选/简答/编程逐题解析，附答案速查表与主题索引。
 
 维护约定：真题类页面必须逐题标注来源与核对状态（`【原文】`/`【单一来源】`/`【自核】`），**题面缺失就写缺失，不代拟题面**；发现答案与题面矛盾时列表保留，不擅自"修正"成看起来对的版本。
 

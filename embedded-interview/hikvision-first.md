@@ -643,7 +643,7 @@ struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *he
 | C3/C4 | 声明、关键字 | [存储期与模块化](/c-language/storage-modules.md) |
 | C5/C6/C7 | const、volatile、位域 | [C03](/embedded-interview/c-basics.md#c03)、[C05](/embedded-interview/c-basics.md#c05)、[位运算专题](/c-language/bitwise-registers.md) |
 | C8/A3 | 平台与字节数、汇编 | [类型与转换](/c-language/types-and-conversions.md)、[交叉编译](/embedded-linux/cross-compilation.md) |
-| D1/D2 | 线性结构、栈与队列 | [中间件与算法区](/middleware-algorithm/index.md)（若建）、教材表 |
+| D1/D2 | 线性结构、栈与队列 | [ESP32、BLE 与物联网通信](/embedded-interview/network-iot.md)、教材表 |
 | A1 | 补码 | [C08](/embedded-interview/c-basics.md#c08) |
 | A2 | ARM 寄存器 | [启动链](/embedded-linux/boot-chain.md)、[内核与设备树](/embedded-linux/kernel-device-tree.md) |
 | L1/L2 | 同步机制、进程线程 | [R03](/embedded-interview/rtos.md#r03)、[L01](/embedded-interview/linux-basics.md#l01) |
