@@ -30,6 +30,7 @@
   * [C 语言-数据类型与类型转换专题](c-language/types-and-conversions.md)
   * [C 语言-位运算与寄存器操作专题](c-language/bitwise-registers.md)
   * [C 语言-存储期、作用域与模块化专题](c-language/storage-modules.md)
+  * [C 语言-volatile / const / static 三者辨析](c-language/qualifiers.md)
   * [C 语言-字符串与缓冲区专题](c-language/strings-buffers.md)
   * [C 语言-预处理、编译与链接专题](c-language/preprocess-build-link.md)
   * [C 语言-内存布局与未定义行为专题](c-language/memory-undefined-behavior.md)
