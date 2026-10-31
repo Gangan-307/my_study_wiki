@@ -15,3 +15,6 @@ __pycache__/
 
 # Node
 node_modules/
+
+# 视觉工具临时产物
+/.dsh-vision-router/
